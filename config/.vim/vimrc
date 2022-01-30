@@ -1,0 +1,74 @@
+"          _
+"   _   __(_)___ ___  __________
+"  | | / / / __ `__ \/ ___/ ___/
+" _| |/ / / / / / / / /  / /__
+"(_)___/_/_/ /_/ /_/_/   \___/
+
+let skip_defaults_vim=1
+set viminfo+=n~/.local/share/viminfo
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif
+
+set cryptmethod=blowfish2
+" general options
+source $HOME/.vim/options.vim
+" keymaps
+source $HOME/.vim/keymaps.vim
+" plugin installs
+source $HOME/.vim/plugin-config/master-install.vim
+" plugin config
+source $HOME/.vim/plugin-config/gitgutter.vim
+" switch between header and source files
+source $HOME/.vim/a.vim
+
+" custom commands
+command! PU PlugUpdate | PlugUpgrade
+command! Vterm vert term
+
+" splits
+set splitbelow
+set splitright
+"set fillchars+=vert:\█ " trailing space works better with no termguicolors
+set fillchars+=vert:\ 
+
+" file explorer
+let g:netrw_banner = 0
+let g:netrw_winsize = 15
+
+" cursor in insert mode
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+elseif $TERM_PROGRAM =~ "iTerm"
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7" " vertical bar in insert mode
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7" " block in normal mode
+else
+  let &t_SI = "\e[5 q"
+  let &t_EI = "\e[2 q"
+endif
+
+function TerminalManager()
+  setlocal norelativenumber
+  setlocal nonumber
+  silent! normal i
+endfunction
+
+augroup terminalmanagement
+  autocmd TerminalOpen call TerminalManager()
+  autocmd BufWinEnter,FocusGained * if &buftype == 'terminal' | call TerminalManager() | endif 
+augroup END
+
+" color and similar options (best to be put last in the vimrc)
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set background=dark
+set notermguicolors
+colorscheme peachpuff
+highlight Comment guibg=green ctermfg=green
+highlight Visual guibg=blue ctermfg=blue
+highlight Search guibg=blue ctermbg=blue term=underline
+highlight IncSearch guibg=blue ctermbg=blue term=underline
+highlight SpellBad guibg=red ctermbg=red
+highlight clear SignColumn
+highlight clear CursorLine

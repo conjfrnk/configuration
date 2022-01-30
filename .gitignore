@@ -1,0 +1,17 @@
+pack/
+autoload/
+sessions/
+.netrwhist
+Session.vim
+
+*.o
+*.zwc
+.DS_Store
+*.log
+
+dwmblocks
+st
+slock
+stest
+dmenu
+dwm

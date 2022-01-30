@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "some possible names:"
+find /mnt -mindepth 1 -maxdepth 1 -group root -type d
+echo; echo "input name:"
+read name
+
+hostname=$(cat /proc/sys/kernel/hostname)
+
+cd /
+sudo rsync -aAXv --delete / --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp --exclude=/run --exclude=/mnt --exclude=/media --exclude=/lost+found --exclude=/chain --exclude=/home/*/.bitmonero --exclude=/home/*/Music /mnt/"$name"/"$hostname"

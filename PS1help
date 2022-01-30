@@ -1,0 +1,59 @@
+'\e[0;30m' # Black - Regular
+'\e[0;31m' # Red
+'\e[0;32m' # Green
+'\e[0;33m' # Yellow
+'\e[0;34m' # Blue
+'\e[0;35m' # Purple
+'\e[0;36m' # Cyan
+'\e[0;37m' # White
+'\e[1;30m' # Black - Bold
+'\e[1;31m' # Red
+'\e[1;32m' # Green
+'\e[1;33m' # Yellow
+'\e[1;34m' # Blue
+'\e[1;35m' # Purple
+'\e[1;36m' # Cyan
+'\e[1;37m' # White
+'\e[4;30m' # Black - Underline
+'\e[4;31m' # Red
+'\e[4;32m' # Green
+'\e[4;33m' # Yellow
+'\e[4;34m' # Blue
+'\e[4;35m' # Purple
+'\e[4;36m' # Cyan
+'\e[4;37m' # White
+'\e[40m'   # Black - Background
+'\e[41m'   # Red
+'\e[42m'   # Green
+'\e[43m'   # Yellow
+'\e[44m'   # Blue
+'\e[45m'   # Purple
+'\e[46m'   # Cyan
+'\e[47m'   # White
+'\e[0m'    # Text Reset
+
+d - the date in "Weekday Month Date" format (e.g., "Tue May 26")
+e - an ASCII escape character (033)
+h - the hostname up to the first .
+H - the full hostname
+j - the number of jobs currently run in background
+l - the basename of the shells terminal device name
+n - newline
+r - carriage return
+s - the name of the shell, the basename of $0 (the portion following the final slash)
+t - the current time in 24-hour HH:MM:SS format
+T - the current time in 12-hour HH:MM:SS format
+@ - the current time in 12-hour am/pm format
+A - the current time in 24-hour HH:MM format
+u - the username of the current user
+v - the version of bash (e.g., 4.00)
+V - the release of bash, version + patch level (e.g., 4.00.0)
+w - Complete path of current working directory
+W - the basename of the current working directory
+! - the history number of this command
+# - the command number of this command
+$ - if the effective UID is 0, a #, otherwise a $
+nnn - the character corresponding to the octal number nnn
+\ - a backslash
+[ - begin a sequence of non-printing characters, which could be used to embed a terminal control sequence into the prompt
+] - end a sequence of non-printing characters

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+  echo "some possible devices:"
+  find /mnt -mindepth 1 -maxdepth 1 -group root -type d
+  echo "input name to unmount (mounted on /mnt/<name>):"
+  read name
+else
+  name="$1"
+fi
+
+[ ! -d /mnt/"$name" ] && echo "directory /mnt/$name does not exist." && exit
+
+sudo umount /mnt/"$name"
+sudo cryptsetup luksClose "$name"
+sudo rmdir /mnt/"$name"
+echo "device $name closed and unmounted from /mnt/$name"
