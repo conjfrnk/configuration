@@ -1,6 +1,3 @@
-# if not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 command_exists () {
   type "$1" &> /dev/null ;
 }
