@@ -1,10 +1,12 @@
 " general options
+set nocompatible
 set encoding=utf-8
 set fileencoding=utf-8
 set number relativenumber
 autocmd InsertEnter * :set norelativenumber
 autocmd InsertLeave * :set relativenumber
-syntax on
+syntax enable
+filetype plugin on
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
