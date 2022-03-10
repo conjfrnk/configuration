@@ -18,7 +18,7 @@ parse_git_branch() {
 
 export PS1="\[\e[31m\][\[\e[32m\]\u\[\e[31m\]@\[\e[34m\]\h\[\e[31m\]] \[\e[33m\]\W \[\e[0m\]\$ "
 PS1="\[\e[31m\][\[\e[32m\]\u\[\e[31m\]@\[\e[34m\]\h\[\e[31m\]] \[\e[33m\]\W \[\e[35m\]\$(parse_git_branch)\[\e[0m\]\$ "
-PROMPT_COMMAND='echo -en "\033]0;[$(whoami)@$(hostname)] $(basename $(pwd)) $(parse_git_branch)\a"'
+PROMPT_COMMAND='echo -en "\033]0;[$(whoami)@$(uname -n)] $(basename $(pwd)) $(parse_git_branch)\a"'
 
 # creates a tmux session named as the current directory and containing two windows
 function tmx {
