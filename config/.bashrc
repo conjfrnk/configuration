@@ -42,13 +42,12 @@ alias jn='jupyter notebook'
 
 alias clock='tty-clock -s -c -f "%d.%m.%Y"'
 alias pubip='curl ifconfig.me; echo'
-alias ls='ls --color'
 alias watch='watch --color'
 
 if command_exists exa; then
   alias l='exa -lah'
 else
-  alias l='ls -lah --color'
+  alias l='ls -lah'
 fi
 
 alias c='clear'
