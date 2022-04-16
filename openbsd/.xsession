@@ -16,7 +16,7 @@ picom &
 dunst &
 
 ## SETTING WALLPAPER ###
-feh --no-fehbg --bg-fill ~/Pictures/Wallpapers/text_puffy.png
+feh --no-fehbg --bg-fill ~/.local/wallpapers/text_puffy.png
 
 if [ "$SSH_AGENT_PID" ]; then
   ssh-add -D < /dev/null
