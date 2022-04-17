@@ -7,7 +7,6 @@ export LANG=en_US.UTF-8
 xsetroot -name " "
 #xrandr --dpi 192
 xrdb -load $HOME/.Xresources
-~/.local/bin/volmax
 
 ## START COMPOSITOR ###
 picom &
