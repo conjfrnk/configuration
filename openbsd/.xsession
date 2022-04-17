@@ -24,4 +24,4 @@ if [ "$SSH_AGENT_PID" ]; then
 fi
 
 oxbar connor &
-exec ck-launch-session cwm
+exec cwm
