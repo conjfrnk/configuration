@@ -7,7 +7,7 @@ cache="$cachedir/dmenu_run"
 
 IFS=:
 if stest -dqr -n "$cache" $PATH; then
-  stest -flx $PATH | sort -u | tee "$cache"
+	stest -flx $PATH | sort -u | tee "$cache"
 else
-  cat "$cache"
+	cat "$cache"
 fi
