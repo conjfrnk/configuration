@@ -8,6 +8,7 @@ Session.vim
 *.zwc
 .DS_Store
 *.log
+*.core
 
 dwmblocks
 st
