@@ -22,7 +22,7 @@ LIBS = -L/usr/lib -lc -L${X11LIB} -lX11 ${FREETYPELIBS}
 
 # flags
 CPPFLAGS = -DVERSION=\"${VERSION}\" -D_DEFAULT_SOURCE
-CFLAGS = -std=c99 -pedantic -Wall -Os ${INCS} ${CPPFLAGS}
+CFLAGS = -std=c11 -pedantic -Wall -O3 -mtune=native -flto -fno-math-errno ${INCS} ${CPPFLAGS}
 LDFLAGS = -s ${LIBS}
 
 # Solaris

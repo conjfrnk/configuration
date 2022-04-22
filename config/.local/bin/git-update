@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # store the current dir
 CUR_DIR=$(pwd)
