@@ -13,7 +13,9 @@ Session.vim
 dwmblocks
 st
 slock
+dmenu
 stest
+dwm
 slstatus
 tabbed
 xembed
