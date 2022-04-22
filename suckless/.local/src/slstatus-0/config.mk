@@ -12,7 +12,7 @@ X11LIB = /usr/X11R6/lib
 
 # flags
 CPPFLAGS = -I$(X11INC) -D_DEFAULT_SOURCE
-CFLAGS   = -std=c11 -pedantic -Wall -Wextra -O3 -mtune=native -flto -fno-math-errno
+CFLAGS   = -std=c11 -pedantic -Wall -Wextra
 LDFLAGS  = -L$(X11LIB) -s
 # OpenBSD: add -lsndio
 # FreeBSD: add -lkvm
