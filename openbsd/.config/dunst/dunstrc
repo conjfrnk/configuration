@@ -12,38 +12,35 @@
 #----------------------------------------------------------------------------------
 
 [global]
-    font = Hermit 14
-    markup = yes
-    format = "<b>%s</b>\n%b"
-    sort = yes
-    indicate_hidden = no
-    alignment = center
-    bounce_freq = 0
-    show_age_threshold = -1
-    word_wrap = yes
-    ignore_newline = no
-	origin = top-center
-    geometry = "300x5-1130+20"
-    shrink = no
-    transparency = 0
-    idle_threshold = 70
-    monitor = 0
-    follow = mouse
-    sticky_history = yes
-    history_length = 10
-    show_indicators = yes
-    line_height = 4
-    separator_height = 10
-    padding = 7
-    horizontal_padding = 0
-    separator_color = frame
-    startup_notification = false
-    dmenu = /usr/bin/dmenu -p dunst:
-    browser = /usr/local/bin/firefox
-    icon_position = off
-    icon_path = /usr/share/icons/gnome/32x32/status/:/usr/share/icons/gnome/32x32/devices/
-    frame_width = 0
-  
+font = Hermit 10
+markup = yes
+format = "<b>%s</b>\n%b"
+sort = yes
+indicate_hidden = no
+alignment = center
+show_age_threshold = -1
+word_wrap = yes
+ignore_newline = no
+origin = top-right
+shrink = no
+transparency = 0
+idle_threshold = 70
+monitor = 0
+follow = mouse
+sticky_history = yes
+history_length = 10
+show_indicators = yes
+line_height = 4
+separator_height = 10
+padding = 7
+horizontal_padding = 0
+separator_color = frame
+dmenu = /usr/local/bin/dmenu -p dunst:
+browser = /usr/local/bin/firefox
+icon_position = off
+icon_path = /usr/share/icons/gnome/32x32/status/:/usr/share/icons/gnome/32x32/devices/
+frame_width = 0
+
 frame_color = "#002B36"
 separator_color= frame
 

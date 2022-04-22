@@ -1,15 +1,16 @@
-# disable system beep
 xset b off
-
-# use UTF-8 everywhere
 export LANG=en_US.UTF-8
 
 xsetroot -name " "
-#xrandr --dpi 192
-xrdb -load $HOME/.Xresources
+# disable screen blanking (just suspend lol)
+xset s off;  xset -dpms;  xset s noblank
 
-## START COMPOSITOR ###
-picom &
+xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation" 1 
+xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Button" 2 
+xinput set-prop "/dev/wsmouse" "WS Pointer Wheel Emulation Axes" 6 7 4 5
+xinput set-prop "/dev/wsmouse" "Device Accel Constant Deceleration" 0.2
+
+xrdb -load $HOME/.Xresources
 
 ## START NOTIFICATIONS ###
 dunst &
@@ -22,5 +23,10 @@ if [ "$SSH_AGENT_PID" ]; then
   eval `ssh-agent -s -k`
 fi
 
-oxbar connor &
-exec cwm
+if [ -r ~/.profile ]; then . ~/.profile; fi
+if [ -r ~/.bash_profile ]; then . ~/.bash_profile; fi
+
+slstatus &
+exec dwm
+#oxbar connor &
+#exec cwm

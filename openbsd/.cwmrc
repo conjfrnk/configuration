@@ -14,25 +14,39 @@ fontname "Hermit:size=10"
 
 # Don't assign membership when opening
 sticky yes
+# Snap to edge
+snapdist 10
+moveamount 5
+gap 48 0 0 0
 
 # Bar
 ignore        termbar
 autogroup 0   termbar
 
 # C = Control, M = ALT, S = Shift, 4 = Mod4 (Windows Key)
-unbind CMS-q
-unbind CM-f
+unbind-key all
 
-bind-key M-Return		"xterm -geometry 125x40"
+bind-key M-Return		"xterm -geometry 110x30"
 bind-key 4-d        "dmenu_run"
+bind-key CM-l       lock
 
 bind-key 4S-q			  quit
 bind-key 4M-r       restart
+
 bind-key 4S-f			  window-fullscreen
-bind-key 4-Return   maximize
+bind-key 4-Return   window-maximize
 bind-key 4-q			  window-close
-bind-key 4-j			  window-cycle
-bind-key 4-k			  window-rcycle
+bind-key 4-Tab		  window-cycle
+bind-key M-Tab		  window-cycle
+bind-key 4S-Tab		  window-rcycle
+bind-key MS-Tab		  window-rcycle
+bind-key 4-Right    group-cycle
+bind-key 4-Left     group-rcycle
+bind-key 4S-s       window-stick
+
+bind-key 4S-v       window-vtile
+bind-key 4S-c       window-htile
+
 bind-key 4-1			  group-only-1
 bind-key 4-2			  group-only-2
 bind-key 4-3			  group-only-3
@@ -42,6 +56,7 @@ bind-key 4-6			  group-only-6
 bind-key 4-7			  group-only-7
 bind-key 4-8			  group-only-8
 bind-key 4-9			  group-only-9
+
 bind-key 4S-1			  window-movetogroup-1
 bind-key 4S-2			  window-movetogroup-2
 bind-key 4S-3			  window-movetogroup-3
@@ -51,6 +66,16 @@ bind-key 4S-6			  window-movetogroup-6
 bind-key 4S-7			  window-movetogroup-7
 bind-key 4S-8			  window-movetogroup-8
 bind-key 4S-9			  window-movetogroup-9
+
+bind-key 4-h        window-move-left-big
+bind-key 4-j        window-move-down-big
+bind-key 4-k        window-move-up-big
+bind-key 4-l        window-move-right-big
+
+bind-key 4S-h       window-resize-left-big
+bind-key 4S-j       window-resize-down-big
+bind-key 4S-k       window-resize-up-big
+bind-key 4S-l       window-resize-right-big
 
 # Applications
 bind-key 4-w            firefox
