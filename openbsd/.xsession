@@ -23,7 +23,7 @@ if [ "$SSH_AGENT_PID" ]; then
   eval `ssh-agent -s -k`
 fi
 
-if [ -r ~/.profile ]; then . ~/.profile; fi
+#if [ -r ~/.profile ]; then . ~/.profile; fi
 if [ -r ~/.bash_profile ]; then . ~/.bash_profile; fi
 
 slstatus &

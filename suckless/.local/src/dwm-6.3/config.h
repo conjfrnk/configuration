@@ -64,14 +64,18 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "xterm", NULL };
 static const char *stcmd[] = { "tabbed", "-c", "-r", "2", "st", "-w", "''", NULL };
 static const char *browsercmd[]  = { "firefox", NULL };
+static const char *torbrowsercmd[] = { "tor-browser", NULL };
 static const char *officecmd[]  = { "libreoffice", NULL };
+static const char *keepasscmd[]  = { "keepassxc", NULL };
 
 static Key keys[] = {
 	/* modifier                     key             function        argument */
 	{ MODKEY,                       XK_p,           spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_w,           spawn,          {.v = browsercmd } },
-	{ MODKEY,                       XK_backslash,   spawn,          {.v = officecmd } },
+	{ MODKEY|ShiftMask,             XK_w,           spawn,          {.v = torbrowsercmd } },
+	{ MODKEY,                       XK_o,           spawn,          {.v = officecmd } },
+	{ MODKEY,                       XK_backslash,   spawn,          {.v = keepasscmd } },
 	{ MODKEY,                       XK_b,           togglebar,      {0} },
 	{ MODKEY,                       XK_j,           focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,           focusstack,     {.i = -1 } },
