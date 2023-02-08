@@ -26,6 +26,7 @@ Plug 'tommcdo/vim-lion'
 Plug 'Shirk/vim-gas'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'airblade/vim-gitgutter'
+Plug 'lervag/vimtex'
 call plug#end()
 
 " Get syntax files from config folder
@@ -47,6 +48,7 @@ highlight GitGutterChangeDelete ctermfg=yellow
 " Keybinds
 
 let mapleader = "\<Space>"
+let maplocalleader = "\<Space>"
 
 " Remove arrow keys from normal mode
 noremap <Up> <Nop>

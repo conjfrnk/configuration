@@ -24,4 +24,7 @@ call plug#begin('~/.vim/pack')
 " git gutter
 Plug 'airblade/vim-gitgutter'
 
+"Plug 'vim-latex/vim-latex'
+Plug 'lervag/vimtex'
+
 call plug#end()

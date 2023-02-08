@@ -35,6 +35,7 @@ nnoremap <silent> <C-k> :call WinMove('k')<CR>
 nnoremap <silent> <C-l> :call WinMove('l')<CR>
 
 let mapleader = "\<Space>"
+let maplocalleader ="\<Space>"
 
 " clear search
 noremap <leader>n :noh<CR>

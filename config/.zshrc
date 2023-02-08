@@ -44,6 +44,7 @@ alias jn='jupyter notebook'
 alias clock='tty-clock -s -c -f "%d.%m.%Y"'
 alias pubip='curl ifconfig.me; echo'
 alias watch='watch --color'
+alias grep='grep --color'
 
 if command_exists exa; then
   alias l='exa -lah'
