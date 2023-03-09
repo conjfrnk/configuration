@@ -1,0 +1,52 @@
+general {
+    markup = pango
+    colors = true
+    interval = 10
+}
+
+order += "wireless wlan0"
+order += "battery 0"
+order += "volume master"
+order += "read_file BRIGHTNESS"
+order += "memory"
+order += "load"
+order += "time"
+
+wireless wlan0 {
+    format_up = "%essid%quality %ip"
+    format_down = "W:down"
+}
+
+battery 0 {
+    format = "%status %percentage %remaining"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    low_threshold = 30
+}
+
+volume master {
+    format = "VOL %volume"
+    format_muted = "MUTE %volume"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+
+}
+
+read_file BRIGHTNESS {
+    format = "<span color='#ffffff'>BRI %content%</span>"
+    path = "~/.cache/i3brightness"
+}
+
+memory {
+    format = "MEM %used"
+    threshold_degraded = "25%"
+    format_degraded = "MEMORY: %free"
+}
+
+load {
+    format = "LOAD %1min"
+}
+
+time {
+    format = "%m/%d/%Y %H:%M"
+}
