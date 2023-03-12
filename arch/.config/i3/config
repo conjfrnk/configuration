@@ -26,6 +26,7 @@ font pango:monospace 9
 
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
+exec --no-startup-id feh --bg-fill --randomize --no-fehbg ~/.local/share/wallpapers
 #exec --no-startup-id picom
 
 # use pactl to adjust volume in PulseAudio.
@@ -85,6 +86,7 @@ bindsym $mod+f exec thunar
 bindsym $mod+e exec emacs
 bindsym $mod+backslash [Class="KeePassXC"] scratchpad show; [instance="keepassxc"] move position center
 bindsym $mod+z exec --no-startup-id i3lock
+bindsym $mod+p exec --no-startup-id feh --bg-fill --no-fehbg --randomize ~/.local/share/wallpapers
 
 # change focus
 bindsym $mod+h focus left
