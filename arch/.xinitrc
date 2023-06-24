@@ -8,7 +8,10 @@ mpd
 xset s off
 xset -dpms
 setterm -blank 0 -powerdown 0
+
 xrandr --output eDP1 --dpi 192 --auto --output DP3 --dpi 196 --left-of eDP1 --output DP4 --off
+xrandr -r 60.00
+
 xinput set-prop 13 310 1
 
 exec i3
