@@ -22,7 +22,8 @@ LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft \
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
-STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS)
+GRAPHITE = -fgraphite-identity -floop-nest-optimize
+STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS) $(GRAPHITE)
 STLDFLAGS = $(LIBS) $(LDFLAGS)
 
 # OpenBSD:

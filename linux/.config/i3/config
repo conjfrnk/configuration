@@ -16,7 +16,7 @@ set $browser firefox
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 9
+font pango:monospace 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -27,6 +27,7 @@ font pango:monospace 9
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill --randomize --no-fehbg ~/.local/share/wallpapers
+exec --no-startup-id thunar --daemon
 #exec --no-startup-id picom
 
 # use pactl to adjust volume in PulseAudio.
@@ -37,9 +38,9 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # increase brightness
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 && xbacklight | awk -F. '{ print $1 }' > ~/.cache/i3brightness && $refresh_i3status
+bindsym XF86MonBrightnessUp exec --no-startup-id doas /usr/bin/xbacklight -inc 10 && xbacklight -get | awk -F. '{ print $1 }' > ~/.cache/i3brightness && $refresh_i3status
 # decrease brightness
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && xbacklight | awk -F. '{ print $1 }' > ~/.cache/i3brightness && $refresh_i3status
+bindsym XF86MonBrightnessDown exec --no-startup-id doas /usr/bin/xbacklight -dec 10 && xbacklight -get | awk -F. '{ print $1 }' > ~/.cache/i3brightness && $refresh_i3status
 
 # use mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod

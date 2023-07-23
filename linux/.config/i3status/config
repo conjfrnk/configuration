@@ -4,7 +4,7 @@ general {
     interval = 10
 }
 
-order += "wireless wlan0"
+order += "wireless wlp0s20f3"
 order += "battery 0"
 order += "volume master"
 order += "read_file BRIGHTNESS"
@@ -12,7 +12,7 @@ order += "memory"
 order += "load"
 order += "time"
 
-wireless wlan0 {
+wireless wlp0s20f3 {
     format_up = "%essid%quality %ip"
     format_down = "W:down"
 }
