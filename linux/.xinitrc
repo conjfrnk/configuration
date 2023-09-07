@@ -9,7 +9,7 @@ xset s off
 xset -dpms
 setterm -blank 0 -powerdown 0
 
-xrandr --output eDP1 --dpi 192 --auto --output DP3 --dpi 192 --left-of eDP1 --output DP4 --off
+xrandr --output eDP-1 --dpi 192 --auto --output DP-3 --dpi 192 --left-of eDP-1
 
 /usr/bin/xbacklight -set $(cat ~/.cache/i3brightness)
 

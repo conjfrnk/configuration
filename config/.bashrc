@@ -103,4 +103,6 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-conda activate base
+if command_exists conda; then
+    conda activate base
+fi
