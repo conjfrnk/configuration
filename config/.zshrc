@@ -41,7 +41,7 @@ alias nv='nvim'
 alias py='python3'
 alias jn='jupyter notebook'
 
-alias clock='tty-clock -s -c -f "%d.%m.%Y"'
+alias clock='tty-clock -s -c -f "%m/%d/%Y"'
 alias pubip='curl ifconfig.me; echo'
 alias watch='watch --color'
 alias grep='grep --color'
@@ -61,3 +61,21 @@ alias logins='last -f /var/log/wtmp | less'
 
 # mac
 alias brew-update='brew update && brew upgrade --fetch-HEAD'
+
+export PATH="~/.config/emacs/bin:$PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/connor/.miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/connor/.miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/connor/.miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/connor/.miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+export PATH="~/.config/emacs/bin:$PATH"
