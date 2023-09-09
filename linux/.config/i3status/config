@@ -10,10 +10,11 @@ order += "volume master"
 order += "read_file BRIGHTNESS"
 order += "memory"
 order += "load"
+order += "read_file PKGS"
 order += "time"
 
 wireless wlp0s20f3 {
-    format_up = "%essid%quality %ip"
+    format_up = "%essid%quality"
     format_down = "W:down"
 }
 
@@ -29,7 +30,6 @@ volume master {
     device = "default"
     mixer = "Master"
     mixer_idx = 0
-
 }
 
 read_file BRIGHTNESS {
@@ -45,6 +45,11 @@ memory {
 
 load {
     format = "LOAD %1min"
+}
+
+read_file PKGS {
+    format = "<span color='#ffffff'>PKGS %content</span>"
+    path = "~/.cache/pkgs.count"
 }
 
 time {
