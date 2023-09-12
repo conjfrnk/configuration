@@ -14,7 +14,7 @@ order += "read_file PKGS"
 order += "time"
 
 wireless wlp0s20f3 {
-    format_up = "%essid%quality"
+    format_up = "%essid%quality %ip"
     format_down = "W:down"
 }
 

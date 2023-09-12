@@ -65,8 +65,8 @@ alias clock='tty-clock -s -c -f "%m/%d/%Y"'
 alias pubip='curl ifconfig.me; echo'
 alias watch='watch --color'
 
-if command_exists exa; then
-    alias l='exa -lah'
+if command_exists eza; then
+    alias l='eza -lah'
 else
     alias l='ls -lah'
 fi
