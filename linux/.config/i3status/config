@@ -4,6 +4,7 @@ general {
     interval = 10
 }
 
+order += "read_file WEATHER"
 order += "wireless wlp0s20f3"
 order += "battery 0"
 order += "volume master"
@@ -12,6 +13,11 @@ order += "memory"
 order += "load"
 order += "read_file PKGS"
 order += "time"
+
+read_file WEATHER {
+    format = "<span color='#ffffff'>%content</span>"
+    path = "~/.cache/weather"
+}
 
 wireless wlp0s20f3 {
     format_up = "%essid%quality %ip"
