@@ -63,7 +63,8 @@ alias jn='jupyter notebook'
 
 alias clock='tty-clock -s -c -f "%m/%d/%Y"'
 alias pubip='curl ifconfig.me; echo'
-alias wth='curl wttr.in'
+alias wthr='curl wttr.in'
+alias wthrup='curl wttr.in/?format="%r+%C+%t(%f)+%h+%w\n" > ~/.cache/weather; cat ~/.cache/weather'
 alias watch='watch --color'
 
 if command_exists eza; then
