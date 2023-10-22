@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+curl wttr.in/?format="%r+%C+%t(%f)+%h+%w\n" > ~/.cache/weather
