@@ -56,6 +56,7 @@ alias ga='git add'
 alias gc='git commit -v'
 alias gp='git fetch && git merge --no-edit FETCH_HEAD'
 alias gP='git push'
+alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
 
 alias nv='nvim'
 alias py='python3'
