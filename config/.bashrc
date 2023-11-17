@@ -49,7 +49,7 @@ stopwatch() {
     done
 }
 
-alias make='make $(nproc)'
+alias make='make -j$(nproc)'
 
 alias gg='git status'
 alias gr='git grep'
