@@ -49,6 +49,8 @@ stopwatch() {
     done
 }
 
+alias make='make $(nproc)'
+
 alias gg='git status'
 alias gr='git grep'
 alias gd='watch --color -n5 git diff --color=always'
