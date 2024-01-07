@@ -21,6 +21,6 @@ if [ -n "$BASH_VERSION" -a -n "$PS1" ]; then
   fi
 fi
 
-if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-      exec startx
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" == 1 ]; then
+    exec startx
 fi
