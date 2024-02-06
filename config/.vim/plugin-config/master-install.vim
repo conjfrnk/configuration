@@ -30,6 +30,7 @@ Plug 'lervag/vimtex'
 Plug 'SirVer/ultisnips'
 "Plug 'honza/vim-snippets'
 
-Plug 'dylanaraps/wal'
+Plug 'morhetz/gruvbox'
+Plug 'drewtempelmeyer/palenight.vim'
 
 call plug#end()
