@@ -19,7 +19,7 @@ call plug#begin('~/.vim/pack')
 "Plug 'preservim/nerdcommenter'
 
 " autopairs
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
 
 " git gutter
 Plug 'airblade/vim-gitgutter'
