@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+emerge -auvpDNU --with-bdeps=y @world | grep Total | awk '{print $2}' | tee ~/.cache/pkgs.count
