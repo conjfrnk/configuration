@@ -28,7 +28,15 @@ syntax enable
 
 
 let g:tex_flavor='latex'
-"let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
+
+let s:uname = system("uname")
+if s:uname == "Darwin\n"
+    let g:vimtex_view_method = 'skim'
+    let g:vimtex_view_skim_sync = 1
+    let g:vimtex_view_skim_activate = 1
+else
+    let g:vimtex_view_method='zathura'
+endif
