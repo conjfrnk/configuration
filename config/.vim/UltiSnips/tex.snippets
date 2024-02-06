@@ -43,31 +43,12 @@ snippet td "superscript" iA
 ^{$1}$0
 endsnippet
 
-snippet // "Fraction" iA
+snippet frac "Fraction" iA
 \\frac{$1}{$2}$0
 endsnippet
 
 snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
 \\frac{`!p snip.rv = match.group(1)`}{$1}$0
-endsnippet
-
-priority 1000
-snippet '^.*\)/' "() Fraction" wrA
-`!p
-stripped = match.string[:-1]
-depth = 0
-i = len(stripped) - 1
-while True:
-    if stripped[i] == ')': depth += 1
-    if stripped[i] == '(': depth -= 1
-    if depth == 0: break;
-    i -= 1
-snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-`{$1}$0
-endsnippet
-
-snippet / "Fraction" iA
-\\frac{${VISUAL}}{$1}$0
 endsnippet
 
 snippet sympy "sympy block " w
@@ -97,3 +78,40 @@ endsnippet
 snippet "(\\?\w+)(,\.|\.,)" "Vector postfix" riA
 \vec{`!p snip.rv=match.group(1)`}
 endsnippet 
+
+snippet template "Default Options" iA
+\LoadClass{article}
+\makeatletter
+%%%%%%%%%%
+% Packages
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{times}
+\RequirePackage{fancyhdr}
+\RequirePackage{amsmath, amssymb}
+\RequirePackage{fullpage}
+\RequirePackage[mmddyyyy]{datetime}
+%%%%%%%%%%%%%%%%%
+% Set the margins
+\setlength{\textheight}{8.5in}
+\setlength{\headheight}{.25in}
+\setlength{\headsep}{.25in}
+\setlength{\topmargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+%%%%%%%%%%%%%%%
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead{\noindent{Connor Frank} \hfill \today \vspace{0.2in}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+$0
+
+\end{document}
+endsnippet

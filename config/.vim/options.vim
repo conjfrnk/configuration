@@ -25,7 +25,7 @@ autocmd BufRead,BufNewFile CMakeLists.txt setlocal nospell
 autocmd BufRead,BufNewFile *.pdf setlocal readonly
 set spellcapcheck=0
 set spelllang=en
-set spellfile=$HOME/sync/vim/spell/en.utf-8.add
+set spellfile=$HOME/.vimspell.en.utf-8.add
 set updatetime=100 " update things every 100ms (helps git gutter)
 set nobackup
 set nowritebackup
