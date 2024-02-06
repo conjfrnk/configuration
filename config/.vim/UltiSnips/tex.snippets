@@ -86,11 +86,11 @@ snippet template "Default Options" iA
 % Packages
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
+\RequirePackage[mmddyyyy]{datetime}
 \RequirePackage{times}
-\RequirePackage{fancyhdr}
+\RequirePackage{fancyhdr, lastpage}
 \RequirePackage{amsmath, amssymb}
 \RequirePackage{fullpage}
-\RequirePackage[mmddyyyy]{datetime}
 %%%%%%%%%%%%%%%%%
 % Set the margins
 \setlength{\textheight}{8.5in}
@@ -104,8 +104,8 @@ snippet template "Default Options" iA
 % Header/Footer
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead{\noindent{Connor Frank} \hfill \today \vspace{0.2in}}
-\fancyfoot[C]{\thepage}
+\fancyhead{\noindent{Connor Frank} \hfill Modified \today \vspace{0.1in}}
+\fancyfoot[C]{Page \thepage\ of \pageref{LastPage}}
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{0pt}
 
