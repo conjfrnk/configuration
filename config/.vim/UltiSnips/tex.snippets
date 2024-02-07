@@ -4,6 +4,25 @@ snippet beg "begin{} / end{}" bA
 \end{$1}
 endsnippet
 
+snippet sec "section{}" bA
+\section{$1}
+$0
+endsnippet
+
+snippet ssec "subsection{}" bA
+\subsection{$1}
+$0
+endsnippet
+
+snippet sssec "subsubsection{}" bA
+\subsubsection{$1}
+$0
+endsnippet
+
+snippet ** "item" bA
+\item$0
+endsnippet
+
 snippet mk "Math" wA
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
@@ -47,33 +66,33 @@ snippet frac "Fraction" iA
 \\frac{$1}{$2}$0
 endsnippet
 
-snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
-\\frac{`!p snip.rv = match.group(1)`}{$1}$0
-endsnippet
+#snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wrA
+#\\frac{`!p snip.rv = match.group(1)`}{$1}$0
+#endsnippet
 
 snippet sympy "sympy block " w
 sympy $1 sympy$0
 endsnippet
 
-priority 10
-snippet "bar" "bar" riA
-\overline{$1}$0
-endsnippet
-
-priority 100
-snippet "([a-zA-Z])bar" "bar" riA
-\overline{`!p snip.rv=match.group(1)`}
-endsnippet
-
-priority 10
-snippet "hat" "hat" riA
-\hat{$1}$0
-endsnippet
-
-priority 100
-snippet "([a-zA-Z])hat" "hat" riA
-\hat{`!p snip.rv=match.group(1)`}
-endsnippet
+#priority 10
+#snippet "bar" "bar" riA
+#\overline{$1}$0
+#endsnippet
+#
+#priority 100
+#snippet "([a-zA-Z])bar" "bar" riA
+#\overline{`!p snip.rv=match.group(1)`}
+#endsnippet
+#
+#priority 10
+#snippet "hat" "hat" riA
+#\hat{$1}$0
+#endsnippet
+#
+#priority 100
+#snippet "([a-zA-Z])hat" "hat" riA
+#\hat{`!p snip.rv=match.group(1)`}
+#endsnippet
 
 snippet "(\\?\w+)(,\.|\.,)" "Vector postfix" riA
 \vec{`!p snip.rv=match.group(1)`}

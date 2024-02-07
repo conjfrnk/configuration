@@ -27,7 +27,7 @@ Plug 'airblade/vim-gitgutter'
 "Plug 'vim-latex/vim-latex'
 Plug 'lervag/vimtex'
 
-Plug 'SirVer/ultisnips'
+Plug 'sirver/ultisnips'
 "Plug 'honza/vim-snippets'
 
 Plug 'morhetz/gruvbox'
