@@ -21,6 +21,7 @@ source $HOME/.vim/plugin-config/master-install.vim
 source $HOME/.vim/plugin-config/gitgutter.vim
 source $HOME/.vim/plugin-config/vimtex.vim
 source $HOME/.vim/plugin-config/snippets.vim
+source $HOME/.vim/plugin-config/lightline.vim
 " switch between header and source files
 source $HOME/.vim/a.vim
 

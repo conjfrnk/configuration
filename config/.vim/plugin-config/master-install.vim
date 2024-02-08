@@ -11,26 +11,21 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 call plug#begin('~/.vim/pack')
 
-" lightline
-"Plug 'itchyny/lightline.vim'
-"Plug 'itchyny/vim-gitbranch'
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
 
-" auto commenter
 "Plug 'preservim/nerdcommenter'
 
-" autopairs
 "Plug 'jiangmiao/auto-pairs'
 
-" git gutter
 Plug 'airblade/vim-gitgutter'
 
-"Plug 'vim-latex/vim-latex'
 Plug 'lervag/vimtex'
 
 Plug 'sirver/ultisnips'
 "Plug 'honza/vim-snippets'
 
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
 
 call plug#end()
