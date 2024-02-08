@@ -13,19 +13,15 @@ call plug#begin('~/.vim/pack')
 
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
-
-"Plug 'preservim/nerdcommenter'
-
-"Plug 'jiangmiao/auto-pairs'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'preservim/nerdtree'
 
 Plug 'airblade/vim-gitgutter'
 
 Plug 'lervag/vimtex'
 
 Plug 'sirver/ultisnips'
-"Plug 'honza/vim-snippets'
 
-"Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
 
 call plug#end()
