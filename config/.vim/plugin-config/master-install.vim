@@ -25,4 +25,7 @@ Plug 'sirver/ultisnips'
 
 Plug 'drewtempelmeyer/palenight.vim'
 
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+
 call plug#end()

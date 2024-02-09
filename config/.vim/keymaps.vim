@@ -97,5 +97,12 @@ function! DeleteEmptyBuffers()
   endif
 endfunction
 
-" space-x to delete empty and hidden buffers
+" space-bx to delete empty and hidden buffers
 nnoremap <leader>bx :call DeleteEmptyBuffers() <bar> :call DeleteHiddenBuffers()<CR>
+
+" change ranger f binding to r
+let g:ranger_map_keys = 0
+map <leader>r :Ranger<CR>
+
+" fzf files
+map <leader>f :Files<CR>
