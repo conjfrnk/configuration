@@ -56,3 +56,5 @@ set ttyfast
 set breakindent
 set formatoptions=l
 set lbr
+
+set scrolloff=10
