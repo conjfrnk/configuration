@@ -1,3 +1,5 @@
+unameOut="$(uname -s)"
+
 command_exists () {
     type "$1" &> /dev/null ;
 }
@@ -64,6 +66,11 @@ alias nv='nvim'
 alias py='python3'
 alias jn='jupyter notebook'
 
+case "${unameOut}" in
+    Linux*)     alias fm='thunar . &';;
+    Darwin*)    alias fm='open .';;
+esac
+
 alias clock='tty-clock -s -c -f "%m/%d/%Y"'
 alias pubip='curl ifconfig.me; echo'
 alias wttr='curl wttr.in'
@@ -88,7 +95,6 @@ alias brew-update='brew update && brew upgrade --fetch-HEAD'
 
 [ -f '/etc/profile.d/bash_completion.sh' ] && source '/etc/profile.d/bash_completion.sh'
 
-unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     home='/home/connor';;
     Darwin*)    home='/Users/connor';;
