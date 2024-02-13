@@ -15,6 +15,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 Plug 'airblade/vim-gitgutter'
