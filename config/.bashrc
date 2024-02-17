@@ -117,3 +117,7 @@ unset __conda_setup
 if command_exists conda; then
     conda activate base
 fi
+
+if command_exists thefuck; then
+    eval "$(thefuck --alias)"
+fi
