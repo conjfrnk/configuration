@@ -36,6 +36,7 @@ alias ga='git add'
 alias gc='git commit -v'
 alias gp='git fetch && git merge --no-edit FETCH_HEAD'
 alias gP='git push'
+alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
 
 alias nv='nvim'
 alias py='python3'
@@ -46,8 +47,8 @@ alias pubip='curl ifconfig.me; echo'
 alias watch='watch --color'
 alias grep='grep --color'
 
-if command_exists exa; then
-  alias l='exa -lah'
+if command_exists eza; then
+  alias l='eza -lah'
 else
   alias l='ls -lah'
 fi
@@ -61,4 +62,3 @@ alias logins='last -f /var/log/wtmp | less'
 
 # mac
 alias brew-update='brew update && brew upgrade --fetch-HEAD'
-
