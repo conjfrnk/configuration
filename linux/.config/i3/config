@@ -13,6 +13,7 @@ set $mod Mod4
 set $alt Mod3
 set $term st
 set $browser firefox
+set $browser2 google-chrome-stable
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -74,6 +75,11 @@ for_window [Class="KeePassXC"] resize set 3000 2000
 for_window [Class="KeePassXC"] move scratchpad
 exec --no-startup-id keepassxc
 
+for_window [Class="Todoist"] floating enable
+for_window [Class="Todoist"] resize set 2500 2000
+for_window [Class="Todoist"] move scratchpad
+exec --no-startup-id flatpak run com.todoist.Todoist
+
 # custom keybinds
 bindsym $mod+Return exec --no-startup-id $term
 bindsym $mod+Shift+Return [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
@@ -82,12 +88,16 @@ bindsym $mod+c [instance="math"] scratchpad show; [instance="math"] move positio
 bindsym $mod+q kill
 bindsym $mod+d exec --no-startup-id dmenu_run -fn mono:size=12
 bindsym $mod+w exec $browser
+bindsym $mod+Shift+w exec $browser2
 bindsym $mod+m [Class="thunderbird"] scratchpad show; [Class="thunderbird"] move position center
 bindsym $mod+f exec thunar
 bindsym $mod+e exec emacs
 bindsym $mod+backslash [Class="KeePassXC"] scratchpad show; [instance="keepassxc"] move position center
 bindsym $mod+z exec --no-startup-id i3lock
 bindsym $mod+p exec --no-startup-id feh --bg-fill --no-fehbg --randomize ~/.local/share/wallpapers
+bindsym $mod+x exec --no-startup-id jetbrains-toolbox
+bindsym $mod+o exec --no-startup-id flatpak run md.obsidian.Obsidian
+bindsym $mod+Shift+d [Class="Todoist"] scratchpad show; [Class="Todoist"] move position center
 
 # change focus
 bindsym $mod+h focus left
