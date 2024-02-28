@@ -80,6 +80,11 @@ for_window [Class="Todoist"] resize set 2500 2000
 for_window [Class="Todoist"] move scratchpad
 exec --no-startup-id flatpak run com.todoist.Todoist
 
+for_window [Class="Bluebubbles"] floating enable
+for_window [Class="Bluebubbles"] resize set 2500 2000
+for_window [Class="Bluebubbles"] move scratchpad
+exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
+
 # custom keybinds
 bindsym $mod+Return exec --no-startup-id $term
 bindsym $mod+Shift+Return [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
@@ -98,6 +103,7 @@ bindsym $mod+p exec --no-startup-id feh --bg-fill --no-fehbg --randomize ~/.loca
 bindsym $mod+x exec --no-startup-id jetbrains-toolbox
 bindsym $mod+o exec --no-startup-id flatpak run md.obsidian.Obsidian
 bindsym $mod+Shift+d [Class="Todoist"] scratchpad show; [Class="Todoist"] move position center
+bindsym $mod+Shift+i [Class="Bluebubbles"] scratchpad show; [Class="Bluebubbles"] move position center
 
 # change focus
 bindsym $mod+h focus left
