@@ -24,3 +24,5 @@ fi
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" == 1 ]; then
     exec startx
 fi
+
+#type -p gnome-command-daemon > /dev/null && gnome-keyring-daemon -r -d
