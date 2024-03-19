@@ -83,7 +83,7 @@ exec --no-startup-id flatpak run com.todoist.Todoist
 for_window [Class="Bluebubbles"] floating enable
 for_window [Class="Bluebubbles"] resize set 2500 2000
 for_window [Class="Bluebubbles"] move scratchpad
-exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
+#exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
 
 # custom keybinds
 bindsym $mod+Return exec --no-startup-id $term
