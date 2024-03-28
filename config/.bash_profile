@@ -13,6 +13,7 @@ export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 
 [ -d ~/torch ] && . ~/torch/install/bin/torch-activate
+[ -f $HOME/.local/flutter/version ] && export PATH=$PATH:$HOME/.local/flutter/bin
 export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
 if [ -n "$BASH_VERSION" -a -n "$PS1" ]; then

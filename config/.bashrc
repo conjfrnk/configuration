@@ -89,6 +89,7 @@ alias s='source ~/.bashrc > /dev/null 2>&1'
 # linux
 alias name='uname -snrmo'
 alias logins='last -f /var/log/wtmp | less'
+[ -f $HOME/.local/flutter/version ] && export PATH=$PATH:$HOME/.local/flutter/bin && export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 
 # mac
 alias brew-update='brew update && brew upgrade --fetch-HEAD'

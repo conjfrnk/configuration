@@ -101,7 +101,8 @@ bindsym $mod+backslash [Class="KeePassXC"] scratchpad show; [instance="keepassxc
 bindsym $mod+z exec --no-startup-id i3lock
 bindsym $mod+p exec --no-startup-id feh --bg-fill --no-fehbg --randomize ~/.local/share/wallpapers
 bindsym $mod+x exec --no-startup-id jetbrains-toolbox
-bindsym $mod+o exec --no-startup-id flatpak run md.obsidian.Obsidian
+bindsym $mod+o exec --no-startup-id libreoffice
+bindsym $mod+Shift+o exec --no-startup-id flatpak run md.obsidian.Obsidian
 bindsym $mod+Shift+d [Class="Todoist"] scratchpad show; [Class="Todoist"] move position center
 bindsym $mod+Shift+i [Class="Bluebubbles"] scratchpad show; [Class="Bluebubbles"] move position center
 
