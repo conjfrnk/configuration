@@ -62,3 +62,4 @@ alias logins='last -f /var/log/wtmp | less'
 
 # mac
 alias brew-update='brew update && brew upgrade --fetch-HEAD'
+if [[ -f ~/.zprofile ]] then; source ~/.zprofile; fi
