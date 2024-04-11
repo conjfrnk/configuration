@@ -7,6 +7,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_SESSION_TYPE=wayland 
 export GDK_BACKEND=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
 
 export LESSHISTFILE="-"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"

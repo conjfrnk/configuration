@@ -16,7 +16,7 @@ seat seat0 xcursor_theme Adwaita 24
 exec --no-startup-id gammastep -l 40:-75 -t 5500:3000
 
 exec --no-startup-id nm-applet --indicator
-output eDP-1 scale 2
+output eDP-1 scale 2.0
 set $wallpapers_path $HOME/.local/share/wallpapers/png
 output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 exec --no-startup-id thunar --daemon
@@ -88,7 +88,7 @@ bindsym $mod+q kill
 bindsym $mod+d exec $term --class 'launcher' -T "Launch" --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
 for_window [app_id="^launcher$"] floating enable, resize set width 25 ppt height 20 ppt, move position center
 bindsym $mod+w exec $browser
-bindsym $mod+Shift+w exec $browser2
+bindsym $mod+Shift+w exec $browser2 --ozone-platform=wayland
 bindsym $mod+m [app_id="thunderbird"] scratchpad show; [app_id="thunderbird"] move position center
 bindsym $mod+f exec thunar
 bindsym $mod+e exec emacs
