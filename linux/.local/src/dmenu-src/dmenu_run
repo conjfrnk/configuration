@@ -1,2 +1,0 @@
-#!/bin/sh
-dmenu_path | dmenu "$@" -fn "Hack Nerd Font" | ${SHELL:-"/bin/sh"} &
