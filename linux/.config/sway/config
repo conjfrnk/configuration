@@ -21,6 +21,9 @@ set $wallpapers_path $HOME/.local/share/wallpapers/png
 output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 exec --no-startup-id thunar --daemon
 
+set $lock 'swaylock -f --ignore-empty-password --show-failed-attempts --color 1e1e1e'
+bindswitch --reload --locked lid:on exec $lock
+
 # use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
