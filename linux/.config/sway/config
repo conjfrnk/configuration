@@ -15,7 +15,7 @@ seat seat0 xcursor_theme Adwaita 24
 
 exec --no-startup-id gammastep -l 40:-75 -t 5500:3000
 
-exec --no-startup-id nm-applet
+exec --no-startup-id nm-applet --indicator
 output eDP-1 scale 2
 set $wallpapers_path $HOME/.local/share/wallpapers/png
 output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
@@ -40,54 +40,56 @@ floating_modifier $mod
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier
 
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 1500 1000
-for_window [instance="dropdown"] move scratchpad
-exec --no-startup-id $term -n dropdown
+exec --no-startup-id $term --class dropdown -o "window.dimensions.lines=35" -o "window.dimensions.columns=120"
+for_window [app_id="dropdown"] floating enable
+for_window [app_id="dropdown"] resize set 1500 1000
+for_window [app_id="dropdown"] move scratchpad
 
-for_window [instance="sound"] floating enable
-for_window [instance="sound"] resize set 1000 500
-for_window [instance="sound"] move scratchpad
-exec --no-startup-id $term -n sound -e pulsemixer
+exec --no-startup-id $term --class sound -o "window.dimensions.lines=25" -o "window.dimensions.columns=100" -e pulsemixer
+for_window [app_id="sound"] floating enable
+for_window [app_id="sound"] resize set 1000 500
+for_window [app_id="sound"] move scratchpad
 
-for_window [instance="math"] floating enable
-for_window [instance="math"] resize set 1000 1000
-for_window [instance="math"] move scratchpad
-exec --no-startup-id $term -n math -f mono:pixelsize=20 -e calc
+exec --no-startup-id $term --class math -o "window.dimensions.lines=35" -o "window.dimensions.columns=100" -T "Calculator" -e calc
+for_window [app_id="math"] floating enable
+for_window [app_id="math"] resize set 1000 1000
+for_window [app_id="math"] move scratchpad
 
+exec --no-startup-id thunderbird
 for_window [app_id="thunderbird"] floating enable
 for_window [app_id="thunderbird"] resize set 2000 1000
 for_window [app_id="thunderbird"] move scratchpad
-exec --no-startup-id thunderbird
 
+exec --no-startup-id keepassxc
 for_window [app_id="KeePassXC"] floating enable
 for_window [app_id="KeePassXC"] resize set 2000 1000
 for_window [app_id="KeePassXC"] move scratchpad
-exec --no-startup-id keepassxc
 
+exec --no-startup-id flatpak run --socket=wayland com.todoist.Todoist
 for_window [class="Todoist"] floating enable
 for_window [class="Todoist"] resize set 1500 1000
 for_window [class="Todoist"] move scratchpad
-exec --no-startup-id flatpak run --socket=wayland com.todoist.Todoist
 
+#exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
 for_window [app_id="Bluebubbles"] floating enable
 for_window [app_id="Bluebubbles"] resize set 1500 1000
 for_window [app_id="Bluebubbles"] move scratchpad
-#exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
 
 # custom keybinds
 bindsym $mod+Return exec --no-startup-id $term
-bindsym $mod+Shift+Return [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
-bindsym $mod+a [instance="sound"] scratchpad show; [instance="sound"] move position center
-bindsym $mod+c [instance="math"] scratchpad show; [instance="math"] move position center
+bindsym $mod+Shift+Return [app_id="dropdown"] scratchpad show; [app_id="dropdown"] move position center
+bindsym $mod+a [app_id="sound"] scratchpad show; [app_id="sound"] move position center
+bindsym $mod+c [app_id="math"] scratchpad show; [app_id="math"] move position center
 bindsym $mod+q kill
-bindsym $mod+d exec --no-startup-id dmenu_run -fn mono:size=12
+#bindsym $mod+d exec --no-startup-id dmenu_run -fn mono:size=12
+bindsym $mod+d exec $term --class 'launcher' -T "Launch" --command bash -c 'compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec'
+for_window [app_id="^launcher$"] floating enable, resize set width 25 ppt height 20 ppt, move position center
 bindsym $mod+w exec $browser
 bindsym $mod+Shift+w exec $browser2
 bindsym $mod+m [app_id="thunderbird"] scratchpad show; [app_id="thunderbird"] move position center
 bindsym $mod+f exec thunar
 bindsym $mod+e exec emacs
-bindsym $mod+backslash [app_id="KeePassXC"] scratchpad show; [instance="keepassxc"] move position center
+bindsym $mod+backslash [app_id="KeePassXC"] scratchpad show; [app_id="KeePassXC"] move position center
 bindsym $mod+z exec swaylock --ignore-empty-password --show-failed-attempts --color 1e1e1e
 bindsym $mod+p output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 bindsym $mod+x exec --no-startup-id jetbrains-toolbox
