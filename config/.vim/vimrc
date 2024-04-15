@@ -20,6 +20,7 @@ source $HOME/.vim/plugin-config/master-install.vim
 " plugin config
 source $HOME/.vim/plugin-config/gitgutter.vim
 source $HOME/.vim/plugin-config/vimtex.vim
+source $HOME/.vim/plugin-config/markdown-preview.vim
 source $HOME/.vim/plugin-config/snippets.vim
 source $HOME/.vim/plugin-config/lightline.vim
 source $HOME/.vim/plugin-config/nerdtree.vim

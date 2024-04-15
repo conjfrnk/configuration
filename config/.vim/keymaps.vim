@@ -106,3 +106,8 @@ map <leader>r :Ranger<CR>
 
 " fzf files
 map <leader>f :Files<CR>
+
+" markdown
+nmap <C-m> <Plug>MarkdownPreview
+nmap <M-m> <Plug>MarkdownPreviewStop
+nmap <leader>m <Plug>MarkdownPreviewToggle

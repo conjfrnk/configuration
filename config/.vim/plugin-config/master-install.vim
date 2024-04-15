@@ -21,6 +21,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 
 Plug 'lervag/vimtex'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 Plug 'sirver/ultisnips'
 
