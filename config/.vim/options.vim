@@ -3,9 +3,14 @@ set nocompatible
 set encoding=utf-8
 set fileencoding=utf-8
 set fileformat=unix
-set number relativenumber
-autocmd InsertEnter * :set norelativenumber
-autocmd InsertLeave * :set relativenumber
+if (has_key(environ(), "SSH_CLIENT"))
+    " on a potentially slow/laggy SSH connection
+    set norelativenumber nocursorline
+else
+    set number relativenumber
+    autocmd InsertEnter * :set norelativenumber
+    autocmd InsertLeave * :set relativenumber
+endif
 syntax enable
 filetype plugin on
 set tabstop=4
