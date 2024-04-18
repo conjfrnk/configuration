@@ -68,10 +68,9 @@ for_window [app_id="KeePassXC"] floating enable
 for_window [app_id="KeePassXC"] resize set 2000 1000
 for_window [app_id="KeePassXC"] move scratchpad
 
-exec --no-startup-id flatpak run --socket=wayland com.todoist.Todoist
-for_window [class="Todoist"] floating enable
-for_window [class="Todoist"] resize set 1500 1000
-for_window [class="Todoist"] move scratchpad
+exec --no-startup-id todoist-wrapper
+for_window [app_id="todoist-wrapper"] floating enable
+for_window [app_id="todoist-wrapper"] move scratchpad
 
 #exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
 for_window [app_id="Bluebubbles"] floating enable
@@ -98,7 +97,7 @@ bindsym $mod+p output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 bindsym $mod+x exec --no-startup-id jetbrains-toolbox
 bindsym $mod+o exec --no-startup-id libreoffice
 bindsym $mod+Shift+o exec --no-startup-id flatpak run --socket=wayland md.obsidian.Obsidian --ozone-platform=wayland --enable-features=WaylandWindowDecorations
-bindsym $mod+Shift+d [class="Todoist"] scratchpad show; [class="Todoist"] move position center
+bindsym $mod+Shift+d [app_id="todoist-wrapper"] scratchpad show; [app_id="todoist-wrapper"] move position center
 bindsym $mod+Shift+i [class="Bluebubbles"] scratchpad show; [class="Bluebubbles"] move position center
 
 # change focus
