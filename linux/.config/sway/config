@@ -73,9 +73,9 @@ for_window [app_id="todoist-wrapper"] floating enable
 for_window [app_id="todoist-wrapper"] move scratchpad
 
 #exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
-for_window [app_id="Bluebubbles"] floating enable
-for_window [app_id="Bluebubbles"] resize set 1500 1000
-for_window [app_id="Bluebubbles"] move scratchpad
+for_window [title="BlueBubbles"] floating enable
+for_window [title="BlueBubbles"] resize set 1500 1000
+for_window [title="BlueBubbles"] move scratchpad
 
 # custom keybinds
 bindsym $mod+Return exec --no-startup-id $term
@@ -98,7 +98,7 @@ bindsym $mod+x exec --no-startup-id jetbrains-toolbox
 bindsym $mod+o exec --no-startup-id libreoffice
 bindsym $mod+Shift+o exec --no-startup-id flatpak run --socket=wayland md.obsidian.Obsidian --ozone-platform=wayland --enable-features=WaylandWindowDecorations
 bindsym $mod+Shift+d [app_id="todoist-wrapper"] scratchpad show; [app_id="todoist-wrapper"] move position center
-bindsym $mod+Shift+i [class="Bluebubbles"] scratchpad show; [class="Bluebubbles"] move position center
+bindsym $mod+Shift+i [title="BlueBubbles"] scratchpad show; [title="BlueBubbles"] move position center
 
 # change focus
 bindsym $mod+h focus left
