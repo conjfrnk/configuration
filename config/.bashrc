@@ -61,6 +61,7 @@ alias gc='git commit -v'
 alias gp='git fetch && git merge --no-edit FETCH_HEAD'
 alias gP='git push'
 alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
+alias lg='lazygit'
 
 alias nv='nvim'
 alias py='python3'
@@ -85,6 +86,12 @@ fi
 
 alias c='clear'
 alias s='source ~/.bashrc > /dev/null 2>&1'
+
+if command_exists fastfetch; then
+    alias f='fastfetch'
+else
+    alias f='neofetch'
+fi
 
 # linux
 alias name='uname -snrmo'
