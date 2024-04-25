@@ -24,6 +24,9 @@ exec --no-startup-id thunar --daemon
 
 set $lock 'swaylock -f --ignore-empty-password --show-failed-attempts --color 1e1e1e'
 bindswitch --reload --locked lid:on exec $lock
+exec swayidle -w \
+	before-sleep 'loginctl lock-session $XDG_SESSION_ID' \
+	lock $lock
 
 # use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
