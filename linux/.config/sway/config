@@ -16,7 +16,8 @@ seat seat0 xcursor_theme Adwaita 24
 exec --no-startup-id gammastep -l 40:-75 -t 5500:3000
 
 exec --no-startup-id nm-applet --indicator
-output eDP-1 scale 2
+output eDP-1 pos 0 0 scale 2
+output DP-3 pos -2560 0
 set $wallpapers_path $HOME/.local/share/wallpapers/png
 output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 exec --no-startup-id thunar --daemon
