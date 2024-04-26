@@ -37,6 +37,7 @@ alias gc='git commit -v'
 alias gp='git fetch && git merge --no-edit FETCH_HEAD'
 alias gP='git push'
 alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
+alias lg='lazygit'
 
 alias nv='nvim'
 alias py='python3'
@@ -63,3 +64,4 @@ alias logins='last -f /var/log/wtmp | less'
 # mac
 alias brew-update='brew update && brew upgrade --fetch-HEAD'
 if [[ -f ~/.zprofile ]] then; source ~/.zprofile; fi
+[[ ! -r /Users/connor/.opam/opam-init/init.zsh ]] || source /Users/connor/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
