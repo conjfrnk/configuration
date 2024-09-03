@@ -30,3 +30,6 @@ if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
 fi
 
 type -p gnome-command-daemon > /dev/null && gnome-keyring-daemon -r -d
+
+# opam configuration
+test -r ~/.opam/opam-init/init.sh && . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
