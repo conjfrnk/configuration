@@ -65,3 +65,7 @@ alias logins='last -f /var/log/wtmp | less'
 alias brew-update='brew update && brew upgrade --fetch-HEAD'
 if [[ -f ~/.zprofile ]] then; source ~/.zprofile; fi
 [[ ! -r /Users/connor/.opam/opam-init/init.zsh ]] || source /Users/connor/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+if command_exists opam; then
+    eval $(opam env)
+fi
