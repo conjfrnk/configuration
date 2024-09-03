@@ -129,3 +129,7 @@ fi
 if command_exists thefuck; then
     eval "$(thefuck --alias)"
 fi
+
+if command_exists opam; then
+    eval $(opam env)
+fi
