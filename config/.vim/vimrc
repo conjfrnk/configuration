@@ -26,6 +26,8 @@ source $HOME/.vim/plugin-config/lightline.vim
 source $HOME/.vim/plugin-config/nerdtree.vim
 " switch between header and source files
 source $HOME/.vim/a.vim
+" OCaml
+source $HOME/.vim/ocaml.vim
 
 " custom commands
 command! PU PlugUpdate | PlugUpgrade
