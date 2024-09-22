@@ -53,6 +53,7 @@ if command_exists eza; then
 else
   alias l='ls -lah'
 fi
+alias t='tree -C'
 
 alias c='clear'
 alias s='source ~/.zshrc > /dev/null 2>&1'
