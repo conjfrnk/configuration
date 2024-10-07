@@ -18,9 +18,36 @@ parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
-export PS1="%(?..[%?] )\[\e[31m\][\[\e[32m\]\u\[\e[31m\]@\[\e[34m\]\h\[\e[31m\]] \[\e[33m\]\W \[\e[0m\]\$ "
-PS1="%(?..[%?] )\[\e[31m\][\[\e[32m\]\u\[\e[31m\]@\[\e[34m\]\h\[\e[31m\]] \[\e[33m\]\W \[\e[35m\]\$(parse_git_branch)\[\e[0m\]\$ "
-PROMPT_COMMAND='echo -en "\033]0;[$(whoami)@$(uname -n)] $(basename $(pwd)) $(parse_git_branch)\a"'
+# Color Codes
+RED='\[\e[31m\]'
+GREEN='\[\e[32m\]'
+YELLOW='\[\e[33m\]'
+BLUE='\[\e[34m\]'
+CYAN='\[\e[36m\]'
+RESET='\[\e[0m\]'
+
+# Function to capture the last exit status
+capture_exit_status() {
+    LAST_EXIT="$?"
+}
+
+# Update PROMPT_COMMAND to capture exit status and set terminal title
+PROMPT_COMMAND='capture_exit_status; echo -en "\033]0;[${USER}@${HOSTNAME}] ${PWD##*/} $(parse_git_branch)\a"'
+
+# Function to get Git branch info
+parse_git_branch() {
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [[ -n "$branch" ]]; then
+        echo "($branch)"
+    fi
+}
+
+# Build the PS1 prompt
+PS1='$(if [ $LAST_EXIT -ne 0 ]; then echo "[${LAST_EXIT}] "; fi)'
+PS1+="${RED}[${GREEN}\u${RED}@${BLUE}\h${RED}] "
+PS1+="${YELLOW}\w "
+PS1+="${CYAN}\$(parse_git_branch)"
+PS1+="${RESET}% "
 
 # creates a tmux session named as the current directory and containing two windows
 function tmx {
