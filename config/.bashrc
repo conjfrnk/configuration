@@ -38,7 +38,7 @@ PROMPT_COMMAND='capture_exit_status; echo -en "\033]0;[${USER}@${HOSTNAME}] ${PW
 parse_git_branch() {
     branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     if [[ -n "$branch" ]]; then
-        echo "($branch)"
+        echo "($branch) "
     fi
 }
 
