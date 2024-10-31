@@ -25,8 +25,10 @@ if [ -n "$BASH_VERSION" -a -n "$PS1" ]; then
   fi
 fi
 
-if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-    exec dbus-run-session sway
+if [ $( uname -s ) == "Linux" ]; then
+    if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+        exec dbus-run-session sway
+    fi
 fi
 
 type -p gnome-command-daemon > /dev/null && gnome-keyring-daemon -r -d
