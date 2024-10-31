@@ -15,8 +15,9 @@ export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 
-[ -d ~/torch ] && . ~/torch/install/bin/torch-activate
+[ -d $HOME/torch ] && . ~/torch/install/bin/torch-activate
 [ -f $HOME/.local/flutter/version ] && export PATH=$PATH:$HOME/.local/flutter/bin
+[ -d $HOME/.local/share/cargo/bin ] && export PATH=$PATH:$HOME/.local/share/cargo/bin
 export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
 if [ -n "$BASH_VERSION" -a -n "$PS1" ]; then
