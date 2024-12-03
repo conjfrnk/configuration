@@ -50,4 +50,7 @@
 ;(unpin! t)
 (package! evil-snipe :disable t)
 (package! obsidian)
-(package! hydra)
+(package! org-roam)
+(package! org-roam-ui
+  :recipe (:host github :repo "org-roam/org-roam-ui"))
+(package! emacsql-sqlite3)
