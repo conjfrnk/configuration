@@ -40,7 +40,15 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-agenda-files (directory-files-recursively "~/Notes" "\\.org$"))
+;; Set this before org loads
+(after! org
+  (setq org-agenda-files
+        (append (directory-files-recursively "~/Notes/org/" "\\.org$")
+                (directory-files-recursively "~/Notes/org/roam/" "\\.org$")))
+  ;; Also ensure TODOs are tracked
+  (setq org-track-ordered-property-with-tag t)
+  ;; Include done TODOs in agenda
+  (setq org-agenda-log-mode-items '(closed clock state)))
 (global-auto-revert-mode t)
 
 
@@ -128,28 +136,31 @@
 (setq org-roam-capture-templates
       '(("m" "main" plain ""
          :if-new (file+head "main/${slug}.org"
-                            "#+title: ${title}\n")
+                            "${title}\n#+filetags: %^{tags}\n")
          :immediate-finish t
          :unnarrowed t)
         ("r" "reference" plain ""
          :if-new (file+head "reference/${title}.org"
-                            "#+title: ${title}\n")
+                            "${title}\n#+filetags: %^{tags}\n")
          :immediate-finish t
          :unnarrowed t)
         ("a" "article" plain ""
          :if-new (file+head "articles/${title}.org"
-                            "#+title: ${title}\n#+filetags: :article:\n")
+                            "${title}\n#+filetags: :article:\n")
+         :no-title t  ; Prevent duplication
          :immediate-finish t
          :unnarrowed t)
-        ("d" "default" plain "%?"
-         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n#+filetags: %^{tags}\n")
+        ("d" "default" plain ""
+         :if-new (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "${title}\n#+filetags: %^{tags}\n")
+         :no-title t  ; Prevent duplication
          :unnarrowed t)))
 
 (use-package org-roam
   :ensure t
   :custom
   (org-roam-directory (file-truename "~/Notes/org/roam/"))
+  (org-roam-dailies-directory "journals/")
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -160,9 +171,23 @@
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (setq org-roam-database-connector 'sqlite3)
+  ;; Configurations
   (org-roam-db-autosync-mode)
+  ;; Require additional modules
+  (require 'org-roam-dailies)
+  (require 'org-roam-graph)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
+
+;; Org-roam Dailies Configuration
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :target (file+head "%<%Y-%m-%d>.org"
+                            "%<%Y-%m-%d>\n")
+         :no-title t
+         :unnarrowed t)))
+
 
 (use-package org-roam-ui
   :after org-roam
