@@ -75,3 +75,42 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; obsidian.el configuration
+(use-package! obsidian
+  :after org  ; Adjust this if necessary
+  :config
+  (obsidian-specify-path "~/Notes/obsidian")  ; Replace with your vault path
+
+  ;; Optional settings
+  (setq obsidian-inbox-directory "Inbox")
+  ;; (setq obsidian-wiki-link-create-file-in-inbox nil)
+  ;; (setq obsidian-daily-notes-directory "Daily Notes")
+  ;; (setq obsidian-templates-directory "Templates")
+  ;; (setq obsidian-daily-note-template "Daily Note Template.md")
+
+  ;; Define obsidian-mode key bindings
+  (map! :map obsidian-mode-map
+        "C-c C-o" #'obsidian-follow-link-at-point
+        "C-c C-l" #'obsidian-insert-wikilink
+        "C-c C-b" #'obsidian-backlink-jump)
+
+  ;; Global key bindings
+  ;; Replace "YOUR_BINDING" with your preferred keys, e.g., "C-c o"
+  (map! "C-c o" #'obsidian-jump)       ; Open a note
+  (map! "C-c c" #'obsidian-capture)    ; Capture a new note in the inbox
+  (map! "C-c d" #'obsidian-daily-note) ; Create daily note
+
+  ;; Activate global obsidian mode
+  (global-obsidian-mode +1))
+
+;; Configure evil-escape to use "kj" to escape insert mode
+(use-package! evil-escape
+  :config
+  (setq evil-escape-key-sequence "kj"
+        evil-escape-unordered-key-sequence t))
+
+;; Swap ":" and ";" in normal and visual modes
+(map! :nv ";" #'evil-ex
+      :nv ":" #'evil-repeat-find-char
+      :nv "," #'evil-repeat-find-char-reverse)
