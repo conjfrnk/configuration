@@ -1,203 +1,180 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
+;; Personal Information
 (setq user-full-name "Connor Frank"
       user-mail-address "conjfrnk@gmail.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;;
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
+;; Theme Configuration
 (setq doom-theme 'doom-gruvbox)
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
+;; Line Numbers Configuration
 (setq display-line-numbers-type 'relative)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-;; Set this before org loads
+;; Enable global auto-revert
+(global-auto-revert-mode t)
+
+;; Org Configuration
 (after! org
+  (setq org-directory "~/Notes/org/")
   (setq org-agenda-files
         (append (directory-files-recursively "~/Notes/org/" "\\.org$")
                 (directory-files-recursively "~/Notes/org/roam/" "\\.org$")))
-  ;; Also ensure TODOs are tracked
   (setq org-track-ordered-property-with-tag t)
-  ;; Include done TODOs in agenda
   (setq org-agenda-log-mode-items '(closed clock state)))
-(global-auto-revert-mode t)
 
-
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;;
-;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
-
-;; obsidian.el configuration
-(use-package! obsidian
-  :after org  ; Adjust this if necessary
+;; Org-roam Configuration
+(use-package! org-roam
+  :custom
+  (org-roam-directory (file-truename "~/Notes/org/roam/"))
+  (org-roam-database-connector 'sqlite3)
+  (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-file-extensions '("org"))
+  :bind
+  (("C-c n l" . org-roam-buffer-toggle)
+   ("C-c n f" . my/org-roam-node-find-no-archive)
+   ("C-c n F" . org-roam-node-find)
+   ;;("C-c n g" . org-roam-graph)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n c" . org-roam-capture)
+   ("C-c n j" . org-roam-dailies-capture-today)
+   ("C-c n a" . my/org-roam-archive-note)
+   ("C-c b"   . org-mark-ring-goto))
   :config
-  (obsidian-specify-path "~/Notes/obsidian")  ; Replace with your vault path
 
-  ;; Optional settings
+  (org-roam-db-autosync-mode 1)
+
+  ;; Function to find nodes excluding archives
+  (defun my/org-roam-node-find-no-archive ()
+    "Find and open an Org-roam node, excluding archived nodes."
+    (interactive)
+    (org-roam-node-find nil nil
+                        (lambda (node)
+                          (not (member "archive" (org-roam-node-tags node))))))
+
+  ;; Class tags functions
+  (defun my/get-class-slugs ()
+    (mapcar
+     (lambda (node) (org-roam-node-slug node))
+     (cl-remove-if-not
+      (lambda (node)
+        (and (member "class" (org-roam-node-tags node))
+             (not (member "archive" (org-roam-node-tags node)))))
+      (org-roam-node-list))))
+
+  (defun my/select-class-tags ()
+    (let ((class-slugs (my/get-class-slugs)))
+      (if class-slugs
+          (let ((selected (completing-read-multiple "Select class: " class-slugs nil t)))
+            (if selected
+                (concat ":" (string-join selected ":") ":")
+              ""))
+        "")))
+
+  ;; Archive function
+  (defun my/org-roam-archive-note ()
+    (interactive)
+    (let* ((orig-file (buffer-file-name))
+           (orig-dir (file-name-directory orig-file))
+           (archive-dir (expand-file-name "archive/" org-roam-directory))
+           (new-dir (replace-regexp-in-string (regexp-quote (expand-file-name org-roam-directory))
+                                            archive-dir
+                                            orig-dir))
+           (new-file (expand-file-name (file-name-nondirectory orig-file) new-dir)))
+      (unless (file-directory-p new-dir)
+        (make-directory new-dir t))
+      (save-excursion
+        (goto-char (point-min))
+        (if (re-search-forward "^#\\+filetags:" nil t)
+            (progn
+              (end-of-line)
+              (insert " :archive:"))
+          (insert "#+filetags: :archive:\n")))
+      (save-buffer)
+      (when (file-exists-p orig-file)
+        (rename-file orig-file new-file t))
+      (find-file new-file)
+      (org-roam-db-sync)
+      (message "Archived '%s'" new-file)))
+
+  ;; Capture templates
+  (setq org-roam-capture-templates
+        '(("p" "Project" plain
+           "%?"
+           :target (file+head "projects/${slug}.org"
+                             "#+title: ${title}\n#+filetags: :project:\n\n")
+           :unnarrowed t)
+          ("a" "Area" plain
+           "%?"
+           :target (file+head "areas/${slug}.org"
+                             "#+title: ${title}\n#+filetags: :area:\n\n")
+           :unnarrowed t)
+          ("r" "Resource" plain
+           "%?"
+           :target (file+head "resources/${slug}.org"
+                             "#+title: ${title}\n#+filetags: :resource:\n\n")
+           :unnarrowed t)
+          ("A" "Archive" plain
+           "%?"
+           :target (file+head "archive/${slug}.org"
+                             "#+title: ${title}\n#+filetags: :archive:\n\n")
+           :unnarrowed t)
+          ("z" "Zettel" plain
+           "%?"
+           :target (file+head "resources/zettels/${slug}.org"
+                             "#+title: ${title}\n#+filetags: :zettel:\n\n")
+           :unnarrowed t)
+          ("c" "Class (Project)" plain
+           "%?"
+           :target (file+head "projects/classes/${slug}.org"
+                             "#+title: ${title}\n#+filetags: :project:class:${slug}:\n\n")
+           :unnarrowed t)
+          ("n" "Note" plain
+           "%?"
+           :target (file+head "notes/${slug}.org"
+                              "#+title: ${title}\n#+filetags: :note:${slug}:%(my/select-class-tags)\n\n")
+           :immediate-finish nil
+           :unnarrowed t
+           :after-finalize (lambda (&rest _)
+                             (org-mode)
+                             (font-lock-ensure)
+                             (when (fboundp 'doom/reload-font)
+                               (doom/reload-font))
+                             (when (fboundp 'doom-init-themes-h)
+                               (doom-init-themes-h)))))))
+
+;; Obsidian Configuration
+(use-package! obsidian
+  :after org
+  :config
+  (obsidian-specify-path "~/Notes/obsidian")
   (setq obsidian-inbox-directory "Inbox")
-  ;; (setq obsidian-wiki-link-create-file-in-inbox nil)
-  ;; (setq obsidian-daily-notes-directory "Daily Notes")
-  ;; (setq obsidian-templates-directory "Templates")
-  ;; (setq obsidian-daily-note-template "Daily Note Template.md")
-
-  ;; Define obsidian-mode key bindings
   (map! :map obsidian-mode-map
         "C-c C-o" #'obsidian-follow-link-at-point
         "C-c C-l" #'obsidian-insert-wikilink
         "C-c C-b" #'obsidian-backlink-jump)
-
-  ;; Global key bindings
-  ;; Replace "YOUR_BINDING" with your preferred keys, e.g., "C-c o"
-  (map! "C-c o" #'obsidian-jump)       ; Open a note
-  (map! "C-c c" #'obsidian-capture)    ; Capture a new note in the inbox
-  (map! "C-c d" #'obsidian-daily-note) ; Create daily note
-
-  ;; Activate global obsidian mode
+  (map! "C-c o" #'obsidian-jump
+        "C-c c" #'obsidian-capture
+        "C-c d" #'obsidian-daily-note)
   (global-obsidian-mode +1))
 
-;; Configure evil-escape to use "kj" to escape insert mode
+;; Evil Configuration
 (use-package! evil-escape
   :config
   (setq evil-escape-key-sequence "kj"
         evil-escape-unordered-key-sequence t))
 
-;; Swap ":" and ";" in normal and visual modes
 (map! :nv ";" #'evil-ex
       :nv ":" #'evil-repeat-find-char
       :nv "," #'evil-repeat-find-char-reverse)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Notes/org/")
-(setq org-roam-directory (file-truename "~/Notes/org/roam/"))
-
-(setq org-roam-file-extensions '("org"))
-
-(setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-
-(setq org-roam-capture-templates
-      '(("m" "main" plain ""
-         :if-new (file+head "main/${slug}.org"
-                            "${title}\n#+filetags: %^{tags}\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("r" "reference" plain ""
-         :if-new (file+head "reference/${title}.org"
-                            "${title}\n#+filetags: %^{tags}\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("a" "article" plain ""
-         :if-new (file+head "articles/${title}.org"
-                            "${title}\n#+filetags: :article:\n")
-         :no-title t  ; Prevent duplication
-         :immediate-finish t
-         :unnarrowed t)
-        ("d" "default" plain ""
-         :if-new (file+head "pages/%<%Y%m%d%H%M%S>-${slug}.org"
-                            "${title}\n#+filetags: %^{tags}\n")
-         :no-title t  ; Prevent duplication
-         :unnarrowed t)))
-
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename "~/Notes/org/roam/"))
-  (org-roam-dailies-directory "journals/")
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (setq org-roam-database-connector 'sqlite3)
-  ;; Configurations
-  (org-roam-db-autosync-mode)
-  ;; Require additional modules
-  (require 'org-roam-dailies)
-  (require 'org-roam-graph)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
-
-;; Org-roam Dailies Configuration
-(setq org-roam-dailies-capture-templates
-      '(("d" "default" entry
-         "* %?"
-         :target (file+head "%<%Y-%m-%d>.org"
-                            "%<%Y-%m-%d>\n")
-         :no-title t
-         :unnarrowed t)))
-
-
-(use-package org-roam-ui
-  :after org-roam
-  :hook (org-roam-mode . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
-
+;; VTerm Configuration
 (use-package vterm
   :ensure t
   :commands vterm)
+
+(after! ispell
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "en_US")
+  (setq ispell-hunspell-dictionary-alist
+        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
+
+(after! yasnippet
+  (setq yas-snippet-revival nil))
