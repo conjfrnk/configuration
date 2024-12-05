@@ -1,6 +1,8 @@
-;;; Performance Optimizations at Startup
-;; Increase GC threshold and disable file-name-handler-alist during startup
-;; for faster initial load.
+;;;---------------------------------------------------------------------
+;;; Startup & Performance Optimizations
+;;;---------------------------------------------------------------------
+
+;; Increase GC threshold and disable file-name-handler-alist at startup
 (defvar my/original-gc-cons-threshold gc-cons-threshold)
 (defvar my/original-gc-cons-percentage gc-cons-percentage)
 (defvar my/original-file-name-handler-alist file-name-handler-alist)
@@ -25,13 +27,12 @@
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq bidi-inhibit-bpa t)
 
-;;; Original Config Below
-
-;; Performance improvements
+;;;---------------------------------------------------------------------
+;;; GCMH Configuration
+;;;---------------------------------------------------------------------
 (use-package! gcmh
   :init
   ;; Increase garbage collection threshold during startup
-  ;; Already done above, leaving these for consistency
   (setq gc-cons-threshold most-positive-fixnum
         gc-cons-percentage 0.6)
 
@@ -41,14 +42,13 @@
         gcmh-verbose nil  ; reduce logging noise
         gcmh-low-cons-threshold (* 128 1024 1024))  ; 128MB active threshold
   :config
-  ;; Start garbage collection mode
   (gcmh-mode 1)
-
-  ;; Additional optimizations
   (add-hook! 'after-init-hook
-    (setq gc-cons-threshold (* 256 1024 1024)))) ; 256MB after init
+    (setq gc-cons-threshold (* 256 1024 1024))))
 
-;; Faster file-name completion
+;;;---------------------------------------------------------------------
+;;; Core Emacs Improvements
+;;;---------------------------------------------------------------------
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
       completion-ignore-case t)
@@ -58,38 +58,43 @@
       lsp-log-io nil
       lsp-completion-provider :capf)
 
-;; Personal Information
+;;;---------------------------------------------------------------------
+;;; Personal Information & Theme
+;;;---------------------------------------------------------------------
 (setq user-full-name "Connor Frank"
       user-mail-address "conjfrnk@gmail.com")
 
-;; Theme Configuration
 (setq doom-theme 'doom-gruvbox)
 
-;; autosave and backup
+;;;---------------------------------------------------------------------
+;;; Backups & Autosaves
+;;;---------------------------------------------------------------------
 (setq auto-save-default t
       make-backup-files t)
 
-;; Line Numbers Configuration
+;;;---------------------------------------------------------------------
+;;; Display & Line Numbers
+;;;---------------------------------------------------------------------
 (setq display-line-numbers-type 'relative)
 
-;; Enable global auto-revert
 (global-auto-revert-mode t)
-
 (pixel-scroll-precision-mode 1)
 
-;; Org Configuration
+;;;---------------------------------------------------------------------
+;;; Org Configuration
+;;;---------------------------------------------------------------------
 (after! org
-  (setq org-directory "~/Notes/org/")
-  (setq org-agenda-files
+  (setq org-directory "~/Notes/org/"
+        org-agenda-files
         (append (directory-files-recursively "~/Notes/org/" "\\.org$")
-                (directory-files-recursively "~/Notes/org/roam/" "\\.org$")))
-  (setq org-track-ordered-property-with-tag t)
-  (setq org-agenda-log-mode-items '(closed clock state))
-  (setq org-use-property-inheritance t) ; fix weird issue with src blocks
-  (setq org-startup-with-inline-images t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-edit-src-content-indentation 0)
-  (setq org-startup-with-latex-preview t))
+                (directory-files-recursively "~/Notes/org/roam/" "\\.org$"))
+        org-track-ordered-property-with-tag t
+        org-agenda-log-mode-items '(closed clock state)
+        org-use-property-inheritance t
+        org-startup-with-inline-images t
+        org-hide-emphasis-markers t
+        org-edit-src-content-indentation 0
+        org-startup-with-latex-preview t))
 
 (after! org
   (custom-set-faces!
@@ -118,49 +123,50 @@
   (add-to-list 'org-latex-packages-alist '("" "mathtools" t))
   (add-to-list 'org-latex-packages-alist '("" "mathrsfs" t)))
 
+;;;---------------------------------------------------------------------
+;;; Org-Latex-Preview
+;;;---------------------------------------------------------------------
 (use-package! org-latex-preview
   :after org
   :config
-  (plist-put org-latex-preview-appearance-options
-             :page-width 0.8)
+  (plist-put org-latex-preview-appearance-options :page-width 0.8)
   (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
   (setq org-latex-preview-auto-ignored-commands
         '(next-line previous-line mwheel-scroll
-          scroll-up-command scroll-down-command))
-  (setq org-latex-preview-numbered t)
-  (setq org-latex-preview-live t)
-  (setq org-latex-preview-live-debounce 0.25))
+          scroll-up-command scroll-down-command)
+        org-latex-preview-numbered t
+        org-latex-preview-live t
+        org-latex-preview-live-debounce 0.25))
 
-;; Function to find nodes excluding archives
+;;;---------------------------------------------------------------------
+;;; Org-Modern for Visual Enhancements
+;;;---------------------------------------------------------------------
+(use-package! org-modern
+  :after org
+  :config
+  (setq org-auto-align-tags t
+        org-tags-column 0
+        org-fold-catch-invisible-edits 'show-and-error
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+        org-agenda-tags-column 0
+        org-agenda-block-separator ?─
+        org-agenda-time-grid '((daily today require-timed)
+                               (800 1000 1200 1400 1600 1800 2000)
+                               " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        org-agenda-current-time-string
+        "⭠ now ─────────────────────────────────────────────────")
+  (global-org-modern-mode))
+
+;;;---------------------------------------------------------------------
+;;; Org-Roam Configuration
+;;;---------------------------------------------------------------------
 (defun my/org-roam-node-find-no-archive ()
   (interactive)
   (org-roam-node-find nil nil
                       (lambda (node)
                         (not (member "archive" (org-roam-node-tags node))))))
 
-(use-package! org-modern
-  :after org
-  :config
-  (setq
-   org-auto-align-tags t
-   org-tags-column 0
-   org-fold-catch-invisible-edits 'show-and-error
-   org-special-ctrl-a/e t
-   org-insert-heading-respect-content t
-
-   ;; agenda
-   org-agenda-tags-column 0
-   org-agenda-block-separator ?─
-   org-agenda-time-grid
-   '((daily today require-timed)
-     (800 1000 1200 1400 1600 1800 2000)
-     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
-   org-agenda-current-time-string
-   "⭠ now ─────────────────────────────────────────────────")
-
-  (global-org-modern-mode))
-
-;; Org-roam Configuration
 (use-package! org-roam
   :custom
   (org-roam-directory (file-truename "~/Notes/org/roam/"))
@@ -180,7 +186,6 @@
   :config
   (org-roam-db-autosync-mode 1)
 
-  ;; Class tags functions
   (defun my/get-class-slugs ()
     (mapcar
      (lambda (node) (org-roam-node-slug node))
@@ -199,24 +204,20 @@
               ""))
         "")))
 
-  ;; Archive function
   (defun my/org-roam-archive-note ()
     (interactive)
     (let* ((orig-file (buffer-file-name))
            (orig-dir (file-name-directory orig-file))
            (archive-dir (expand-file-name "archive/" org-roam-directory))
            (new-dir (replace-regexp-in-string (regexp-quote (expand-file-name org-roam-directory))
-                                              archive-dir
-                                              orig-dir))
+                                              archive-dir orig-dir))
            (new-file (expand-file-name (file-name-nondirectory orig-file) new-dir)))
       (unless (file-directory-p new-dir)
         (make-directory new-dir t))
       (save-excursion
         (goto-char (point-min))
         (if (re-search-forward "^#\\+filetags:" nil t)
-            (progn
-              (end-of-line)
-              (insert " :archive:"))
+            (progn (end-of-line) (insert " :archive:"))
           (insert "#+filetags: :archive:\n")))
       (save-buffer)
       (when (file-exists-p orig-file)
@@ -225,7 +226,6 @@
       (org-roam-db-sync)
       (message "Archived '%s'" new-file)))
 
-  ;; Capture templates
   (setq org-roam-capture-templates
         '(("p" "Project" plain
            "%?"
@@ -271,7 +271,9 @@
                              (when (fboundp 'doom-init-themes-h)
                                (doom-init-themes-h)))))))
 
-;; Obsidian Configuration
+;;;---------------------------------------------------------------------
+;;; Obsidian Configuration
+;;;---------------------------------------------------------------------
 (use-package! obsidian
   :after org
   :config
@@ -286,7 +288,9 @@
         "C-c d" #'obsidian-daily-note)
   (global-obsidian-mode +1))
 
-;; Evil Configuration
+;;;---------------------------------------------------------------------
+;;; Evil Configuration
+;;;---------------------------------------------------------------------
 (use-package! evil-escape
   :config
   (setq evil-escape-key-sequence "kj"
@@ -296,22 +300,31 @@
       :nv ":" #'evil-repeat-find-char
       :nv "," #'evil-repeat-find-char-reverse)
 
-;; VTerm Configuration
+;;;---------------------------------------------------------------------
+;;; VTerm Configuration
+;;;---------------------------------------------------------------------
 (use-package vterm
   :ensure t
   :commands vterm)
 
+;;;---------------------------------------------------------------------
+;;; Ispell Configuration
+;;;---------------------------------------------------------------------
 (after! ispell
-  (setq ispell-program-name "hunspell")
-  (setq ispell-dictionary "en_US")
-  (setq ispell-hunspell-dictionary-alist
+  (setq ispell-program-name "hunspell"
+        ispell-dictionary "en_US"
+        ispell-hunspell-dictionary-alist
         '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
 
+;;;---------------------------------------------------------------------
+;;; Yasnippet Configuration
+;;;---------------------------------------------------------------------
 (after! yasnippet
   (setq yas-snippet-revival nil))
 
-;; LaTeX
-;; use cdlatex completion instead of yasnippet
+;;;---------------------------------------------------------------------
+;;; LaTeX & CDLaTeX Configuration
+;;;---------------------------------------------------------------------
 (map! :map cdlatex-mode-map
       :i "TAB" #'cdlatex-tab)
 (map! :after latex
@@ -321,3 +334,7 @@
       "i" #'cdlatex-math-symbol
       :desc "Begin environment"
       "e" #'cdlatex-environment)
+
+;;;---------------------------------------------------------------------
+;;; End of Configuration
+;;;---------------------------------------------------------------------
