@@ -1,7 +1,37 @@
+;;; Performance Optimizations at Startup
+;; Increase GC threshold and disable file-name-handler-alist during startup
+;; for faster initial load.
+(defvar my/original-gc-cons-threshold gc-cons-threshold)
+(defvar my/original-gc-cons-percentage gc-cons-percentage)
+(defvar my/original-file-name-handler-alist file-name-handler-alist)
+
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6
+      file-name-handler-alist nil)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 256 1024 1024)
+                  gc-cons-percentage 0.1
+                  file-name-handler-alist my/original-file-name-handler-alist)))
+
+;; Additional performance tweaks
+(setq fast-but-imprecise-scrolling t
+      auto-window-vscroll nil
+      inhibit-compacting-font-caches t
+      read-process-output-max (* 1024 1024)) ; helps with LSP performance
+
+;; Disable bidirectional text scanning
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;;; Original Config Below
+
 ;; Performance improvements
 (use-package! gcmh
   :init
   ;; Increase garbage collection threshold during startup
+  ;; Already done above, leaving these for consistency
   (setq gc-cons-threshold most-positive-fixnum
         gc-cons-percentage 0.6)
 
@@ -22,10 +52,6 @@
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
       completion-ignore-case t)
-
-;; Disable bidirectional text scanning
-(setq-default bidi-paragraph-direction 'left-to-right)
-(setq bidi-inhibit-bpa t)
 
 ;; LSP performance improvements
 (setq lsp-idle-delay 0.500
@@ -105,13 +131,13 @@
   (setq org-latex-preview-live t)
   (setq org-latex-preview-live-debounce 0.25))
 
-
 ;; Function to find nodes excluding archives
 (defun my/org-roam-node-find-no-archive ()
   (interactive)
   (org-roam-node-find nil nil
                       (lambda (node)
                         (not (member "archive" (org-roam-node-tags node))))))
+
 (use-package! org-modern
   :after org
   :config
@@ -152,7 +178,6 @@
    ("C-c n a" . my/org-roam-archive-note)
    ("C-c b"   . org-mark-ring-goto))
   :config
-
   (org-roam-db-autosync-mode 1)
 
   ;; Class tags functions
@@ -286,7 +311,7 @@
   (setq yas-snippet-revival nil))
 
 ;; LaTeX
-                                        ; use cdlatex completion instead of yasnippet
+;; use cdlatex completion instead of yasnippet
 (map! :map cdlatex-mode-map
       :i "TAB" #'cdlatex-tab)
 (map! :after latex
