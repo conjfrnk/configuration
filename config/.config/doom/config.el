@@ -336,5 +336,22 @@
       "e" #'cdlatex-environment)
 
 ;;;---------------------------------------------------------------------
+;;; Python Formatting with Black
+;;;---------------------------------------------------------------------
+(use-package! blacken
+  :defer t
+  :hook (python-mode . blacken-mode)
+  :config
+  (setq blacken-line-length 79))
+
+;;;---------------------------------------------------------------------
+;;; Display Fill Column Indicator at 79 Characters
+;;;---------------------------------------------------------------------
+(setq-default fill-column 79)  ; Set the fill column to 79 characters
+
+;; Enable the fill column indicator in programming modes
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+;;;---------------------------------------------------------------------
 ;;; End of Configuration
 ;;;---------------------------------------------------------------------
