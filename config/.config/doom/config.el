@@ -2,20 +2,14 @@
 ;;; Startup & Performance Optimizations
 ;;;---------------------------------------------------------------------
 
-;; Increase GC threshold and disable file-name-handler-alist at startup
-(defvar my/original-gc-cons-threshold gc-cons-threshold)
-(defvar my/original-gc-cons-percentage gc-cons-percentage)
+;; Save original file-name-handler-alist and disable it for faster startup
 (defvar my/original-file-name-handler-alist file-name-handler-alist)
+(setq file-name-handler-alist nil)
 
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6
-      file-name-handler-alist nil)
-
+;; Restore file-name-handler-alist after startup
 (add-hook 'after-init-hook
           (lambda ()
-            (setq gc-cons-threshold (* 256 1024 1024)
-                  gc-cons-percentage 0.1
-                  file-name-handler-alist my/original-file-name-handler-alist)))
+            (setq file-name-handler-alist my/original-file-name-handler-alist)))
 
 ;; Additional performance tweaks
 (setq fast-but-imprecise-scrolling t
@@ -32,19 +26,16 @@
 ;;;---------------------------------------------------------------------
 (use-package! gcmh
   :init
-  ;; Increase garbage collection threshold during startup
-  (setq gc-cons-threshold most-positive-fixnum
-        gc-cons-percentage 0.6)
-
-  ;; More aggressive settings for GCMH
-  (setq gcmh-idle-delay 10  ; slightly longer idle delay
-        gcmh-high-cons-threshold (* 512 1024 1024)  ; 512MB during idle
-        gcmh-verbose nil  ; reduce logging noise
-        gcmh-low-cons-threshold (* 128 1024 1024))  ; 128MB active threshold
+  ;; We'll let GCMH handle the GC thresholds entirely.
+  ;; Set startup thresholds high to speed up initialization.
+  (setq gcmh-idle-delay 10                 ; Delay before going idle
+        gcmh-high-cons-threshold (* 512 1024 1024) ; 512MB idle threshold
+        gcmh-low-cons-threshold (* 256 1024 1024)  ; 256MB after init (final threshold)
+        gcmh-verbose nil)
   :config
-  (gcmh-mode 1)
-  (add-hook! 'after-init-hook
-    (setq gc-cons-threshold (* 256 1024 1024))))
+  ;; Set gc-cons-percentage to 0.1 after startup to match original config.
+  (add-hook 'emacs-startup-hook (lambda () (setq gc-cons-percentage 0.1)))
+  (gcmh-mode 1))
 
 ;;;---------------------------------------------------------------------
 ;;; Core Emacs Improvements
@@ -78,25 +69,36 @@
 (setq display-line-numbers-type 'relative)
 
 (global-auto-revert-mode t)
-(pixel-scroll-precision-mode 1)
+(when (eq system-type 'gnu/linux)
+  (pixel-scroll-precision-mode 1))
 
 ;;;---------------------------------------------------------------------
-;;; Org Configuration
+;;; Org Configuration (Consolidated)
 ;;;---------------------------------------------------------------------
 (after! org
+  ;; General Org setup
   (setq org-directory "~/Notes/org/"
-        org-agenda-files
-        (append (directory-files-recursively "~/Notes/org/" "\\.org$")
-                (directory-files-recursively "~/Notes/org/roam/" "\\.org$"))
         org-track-ordered-property-with-tag t
         org-agenda-log-mode-items '(closed clock state)
         org-use-property-inheritance t
         org-startup-with-inline-images t
         org-hide-emphasis-markers t
         org-edit-src-content-indentation 0
-        org-startup-with-latex-preview t))
+        org-startup-with-latex-preview t)
 
-(after! org
+  ;; Lazy load org-agenda-files
+  (defvar my/org-agenda-files-loaded nil "Track if agenda files are loaded.")
+  (defun my/lazy-load-org-agenda-files ()
+    "Load org-agenda-files just before org-agenda is called."
+    (unless my/org-agenda-files-loaded
+      (setq org-agenda-files
+            (append (directory-files-recursively "~/Notes/org/" "\\.org$")
+                    (directory-files-recursively "~/Notes/org/roam/" "\\.org$")))
+      (setq my/org-agenda-files-loaded t)))
+
+  (advice-add 'org-agenda :before #'my/lazy-load-org-agenda-files)
+
+  ;; Custom faces for Org
   (custom-set-faces!
     `((org-document-title)
       :foreground ,(face-attribute 'org-document-title :foreground)
@@ -115,25 +117,26 @@
       :weight medium)
     `((org-level-5)
       :foreground ,(face-attribute 'outline-5 :foreground)
-      :weight medium)))
+      :weight medium))
 
-(after! org
+  ;; Additional LaTeX packages in Org
   (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
   (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
   (add-to-list 'org-latex-packages-alist '("" "mathtools" t))
-  (add-to-list 'org-latex-packages-alist '("" "mathrsfs" t)))
+  (add-to-list 'org-latex-packages-alist '("" "mathrsfs" t))
+  )
 
 ;;;---------------------------------------------------------------------
 ;;; Org-Latex-Preview
 ;;;---------------------------------------------------------------------
 (use-package! org-latex-preview
   :after org
+  :defer t
   :config
   (plist-put org-latex-preview-appearance-options :page-width 0.8)
   (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)
   (setq org-latex-preview-auto-ignored-commands
-        '(next-line previous-line mwheel-scroll
-          scroll-up-command scroll-down-command)
+        '(next-line previous-line mwheel-scroll scroll-up-command scroll-down-command)
         org-latex-preview-numbered t
         org-latex-preview-live t
         org-latex-preview-live-debounce 0.25))
@@ -143,6 +146,8 @@
 ;;;---------------------------------------------------------------------
 (use-package! org-modern
   :after org
+  :defer t
+  :hook (org-mode . org-modern-mode) ;; Enable only in Org buffers
   :config
   (setq org-auto-align-tags t
         org-tags-column 0
@@ -154,46 +159,53 @@
         org-agenda-time-grid '((daily today require-timed)
                                (800 1000 1200 1400 1600 1800 2000)
                                " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
-        org-agenda-current-time-string
-        "⭠ now ─────────────────────────────────────────────────")
-  (global-org-modern-mode))
-
+        org-agenda-current-time-string "⭠ now ─────────────────────────────────────────────────"))
 ;;;---------------------------------------------------------------------
 ;;; Org-Roam Configuration
 ;;;---------------------------------------------------------------------
+
+;; Define this function before use-package so it can be autoloaded and used anywhere.
 (defun my/org-roam-node-find-no-archive ()
+  "Find an org-roam node excluding those with the 'archive' tag."
   (interactive)
   (org-roam-node-find nil nil
                       (lambda (node)
                         (not (member "archive" (org-roam-node-tags node))))))
 
 (use-package! org-roam
-  :custom
-  (org-roam-directory (file-truename "~/Notes/org/roam/"))
-  (org-roam-database-connector 'sqlite3)
-  (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-file-extensions '("org"))
-  :bind
-  (("C-c n l" . org-roam-buffer-toggle)
-   ("C-c n f" . my/org-roam-node-find-no-archive)
-   ("C-c n F" . org-roam-node-find)
-   ;;("C-c n g" . org-roam-graph)
-   ("C-c n i" . org-roam-node-insert)
-   ("C-c n c" . org-roam-capture)
-   ("C-c n j" . org-roam-dailies-capture-today)
-   ("C-c n a" . my/org-roam-archive-note)
-   ("C-c b"   . org-mark-ring-goto))
+  ;; We don't use :after org here, because we want org-roam commands available at any time.
+  ;; org-roam will autoload org if necessary.
+  :commands (org-roam-node-find
+             my/org-roam-node-find-no-archive
+             org-roam-node-insert
+             org-roam-capture
+             org-roam-buffer-toggle
+             org-roam-dailies-capture-today
+             org-mark-ring-goto)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . my/org-roam-node-find-no-archive)
+         ("C-c n F" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ("C-c n j" . org-roam-dailies-capture-today)
+         ("C-c n a" . my/org-roam-archive-note)
+         ("C-c b"   . org-mark-ring-goto))
+  :init
+  (setq org-roam-directory (file-truename "~/Notes/org/roam/")
+        org-roam-database-connector 'sqlite3
+        org-roam-node-display-template (concat "${title:*} "
+                                               (propertize "${tags:10}" 'face 'org-tag))
+        org-roam-file-extensions '("org"))
   :config
   (org-roam-db-autosync-mode 1)
 
   (defun my/get-class-slugs ()
-    (mapcar
-     (lambda (node) (org-roam-node-slug node))
-     (cl-remove-if-not
-      (lambda (node)
-        (and (member "class" (org-roam-node-tags node))
-             (not (member "archive" (org-roam-node-tags node)))))
-      (org-roam-node-list))))
+    (mapcar (lambda (node) (org-roam-node-slug node))
+            (cl-remove-if-not
+             (lambda (node)
+               (and (member "class" (org-roam-node-tags node))
+                    (not (member "archive" (org-roam-node-tags node)))))
+             (org-roam-node-list))))
 
   (defun my/select-class-tags ()
     (let ((class-slugs (my/get-class-slugs)))
@@ -227,38 +239,31 @@
       (message "Archived '%s'" new-file)))
 
   (setq org-roam-capture-templates
-        '(("p" "Project" plain
-           "%?"
+        '(("p" "Project" plain "%?"
            :target (file+head "projects/${slug}.org"
                               "#+title: ${title}\n#+filetags: :project:\n\n")
            :unnarrowed t)
-          ("a" "Area" plain
-           "%?"
+          ("a" "Area" plain "%?"
            :target (file+head "areas/${slug}.org"
                               "#+title: ${title}\n#+filetags: :area:\n\n")
            :unnarrowed t)
-          ("r" "Resource" plain
-           "%?"
+          ("r" "Resource" plain "%?"
            :target (file+head "resources/${slug}.org"
                               "#+title: ${title}\n#+filetags: :resource:\n\n")
            :unnarrowed t)
-          ("A" "Archive" plain
-           "%?"
+          ("A" "Archive" plain "%?"
            :target (file+head "archive/${slug}.org"
                               "#+title: ${title}\n#+filetags: :archive:\n\n")
            :unnarrowed t)
-          ("z" "Zettel" plain
-           "%?"
+          ("z" "Zettel" plain "%?"
            :target (file+head "resources/zettels/${slug}.org"
                               "#+title: ${title}\n#+filetags: :zettel:\n\n")
            :unnarrowed t)
-          ("c" "Class (Project)" plain
-           "%?"
+          ("c" "Class (Project)" plain "%?"
            :target (file+head "projects/classes/${slug}.org"
                               "#+title: ${title}\n#+filetags: :project:class:${slug}:\n\n")
            :unnarrowed t)
-          ("n" "Note" plain
-           "%?"
+          ("n" "Note" plain "%?"
            :target (file+head "notes/${slug}.org"
                               "#+title: ${title}\n#+filetags: :note:${slug}:%(my/select-class-tags)\n\n")
            :immediate-finish nil
@@ -276,6 +281,9 @@
 ;;;---------------------------------------------------------------------
 (use-package! obsidian
   :after org
+  :defer t
+  :commands (obsidian-follow-link-at-point obsidian-insert-wikilink obsidian-backlink-jump
+                                           obsidian-jump obsidian-capture obsidian-daily-note obsidian-mode)
   :config
   (obsidian-specify-path "~/Notes/obsidian")
   (setq obsidian-inbox-directory "Inbox")
@@ -304,8 +312,8 @@
 ;;; VTerm Configuration
 ;;;---------------------------------------------------------------------
 (use-package vterm
-  :ensure t
-  :commands vterm)
+  :commands vterm
+  :defer t)
 
 ;;;---------------------------------------------------------------------
 ;;; Ispell Configuration
@@ -347,9 +355,7 @@
 ;;;---------------------------------------------------------------------
 ;;; Display Fill Column Indicator at 79 Characters
 ;;;---------------------------------------------------------------------
-(setq-default fill-column 79)  ; Set the fill column to 79 characters
-
-;; Enable the fill column indicator in programming modes
+(setq-default fill-column 79)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 ;;;---------------------------------------------------------------------
