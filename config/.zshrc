@@ -40,7 +40,7 @@ alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
 alias lg='lazygit'
 
 alias nv='nvim'
-alias py='python3'
+alias py='~/.miniconda3/bin/python'
 alias jn='jupyter notebook'
 
 alias clock='tty-clock -s -c -f "%m/%d/%Y"'
