@@ -13,6 +13,8 @@ seat seat0 xcursor_theme Adwaita 24
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 9
 
+#flatpak run --socket=wayland com.todoist.Todoist --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations
+
 exec --no-startup-id gammastep -l 40:-75 -t 6500:1200
 
 exec --no-startup-id nm-applet --indicator
