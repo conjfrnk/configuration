@@ -63,7 +63,7 @@ alias name='uname -snrmo'
 alias logins='last -f /var/log/wtmp | less'
 
 # mac
-alias brew-update='brew update && brew upgrade --fetch-HEAD'
+alias brew-update='brew update && brew upgrade && brew upgrade --cask --greedy && brew cleanup -s && brew doctor'
 if [[ -f ~/.zprofile ]] then; source ~/.zprofile; fi
 [[ ! -r /Users/connor/.opam/opam-init/init.zsh ]] || source /Users/connor/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
