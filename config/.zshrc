@@ -86,6 +86,12 @@ alias t='tree -C'
 alias c='clear'
 alias s='source ~/.zshrc > /dev/null 2>&1'
 
+if command_exists fastfetch; then
+  alias f='fastfetch'
+else
+  alias f='neofetch'
+fi
+
 # linux
 alias name='uname -snrmo'
 alias logins='last -f /var/log/wtmp | less'
