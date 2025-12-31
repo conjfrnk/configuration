@@ -149,3 +149,12 @@ fi
 if command_exists opam; then
     eval $(opam env)
 fi
+
+# bun completions
+[ -s "/Users/connor/.bun/_bun" ] && source "/Users/connor/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
