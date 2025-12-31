@@ -97,8 +97,28 @@ alias name='uname -snrmo'
 alias logins='last -f /var/log/wtmp | less'
 
 # mac
-alias brew-update='brew update && brew upgrade && brew upgrade --cask --greedy && brew cleanup -s && brew doctor'
-if [[ -f ~/.zprofile ]] then; source ~/.zprofile; fi
+unalias brew-update 2>/dev/null || true
+brew-update() {
+  echo "==> Updating Homebrew metadata…"
+  brew update
+
+  echo "==> Upgrading all formulae…"
+  brew upgrade --formula
+
+  echo "==> Upgrading all casks (including greedy)…"
+  brew upgrade --cask --greedy
+
+  echo "==> Cleaning up old versions…"
+  brew autoremove
+  brew cleanup -s
+
+  echo "==> Doctor check…"
+  brew doctor || true
+
+  echo "==> Outdated after upgrade (should be none):"
+  brew outdated || true
+}
+if [[ -f ~/.zprofile ]]; then source ~/.zprofile; fi
 [[ ! -r /Users/connor/.opam/opam-init/init.zsh ]] || source /Users/connor/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 if command_exists opam; then
