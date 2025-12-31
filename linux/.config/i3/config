@@ -10,7 +10,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
-set $alt Mod3
+set $alt Mod1
 set $term st
 set $browser firefox
 set $browser2 google-chrome-stable
