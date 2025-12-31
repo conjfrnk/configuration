@@ -121,6 +121,27 @@ brew-update() {
 if [[ -f ~/.zprofile ]]; then source ~/.zprofile; fi
 [[ ! -r /Users/connor/.opam/opam-init/init.zsh ]] || source /Users/connor/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
+# Detect home directory properly
+home="$HOME"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('${home}/.local/share/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "${home}/.local/share/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "${home}/.local/share/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="${home}/.local/share/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+if command_exists conda; then
+    conda activate base
+fi
+
 if command_exists opam; then
     eval $(opam env)
 fi
