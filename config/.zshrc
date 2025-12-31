@@ -23,11 +23,11 @@ PROMPT='%(?..[%?] )%{$fg[red]%}[%{$fg[green]%}%n%{$fg[red]%}@%{$fg[blue]%}%m%{$f
 
 # creates a tmux session named as the current directory and containing two windows
 function tmx {
-  name="$(basename $PWD)"
-  tmux new-session -d -s $name
+  name="$(basename "$PWD")"
+  tmux new-session -d -s "$name"
   tmux new-window -d
-  tmux attach-session -d -t $name
-};
+  tmux attach-session -d -t "$name"
+}
 
 alias gg='git status'
 alias gr='git grep'
