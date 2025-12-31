@@ -142,6 +142,10 @@ if command_exists conda; then
     conda activate base
 fi
 
+if command_exists thefuck; then
+    eval "$(thefuck --alias)"
+fi
+
 if command_exists opam; then
     eval $(opam env)
 fi
