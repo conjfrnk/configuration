@@ -64,6 +64,11 @@ alias nv='nvim'
 alias py='python3'
 alias jn='jupyter notebook'
 
+case "$(uname -s)" in
+  Linux*)     alias fm='thunar . &';;
+  Darwin*)    alias fm='open .';;
+esac
+
 alias clock='tty-clock -s -c -f "%m/%d/%Y"'
 alias pubip='curl ifconfig.me; echo'
 alias watch='watch --color'
