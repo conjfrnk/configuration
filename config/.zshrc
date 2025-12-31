@@ -3,7 +3,7 @@ command_exists () {
 }
 
 if command_exists nvim; then
-  export VISUAL='vim'
+  export VISUAL='nvim'
 else
   export VISUAL='vim'
 fi
