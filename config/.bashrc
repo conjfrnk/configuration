@@ -5,7 +5,7 @@ command_exists () {
 }
 
 if command_exists nvim; then
-    export VISUAL='vim'
+    export VISUAL='nvim'
 else
     export VISUAL='vim'
 fi
@@ -13,10 +13,6 @@ export EDITOR="$VISUAL"
 
 HISTSIZE=10000
 SAVEHIST=10000
-
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
-}
 
 # Color Codes
 RED='\[\e[31m\]'
@@ -51,11 +47,11 @@ PS1+="${RESET}% "
 
 # creates a tmux session named as the current directory and containing two windows
 function tmx {
-    name="$(basename $PWD)"
-    tmux new-session -d -s $name
+    name="$(basename "$PWD")"
+    tmux new-session -d -s "$name"
     tmux new-window -d
-    tmux attach-session -d -t $name
-};
+    tmux attach-session -d -t "$name"
+}
 
 countdown() {
     start="$(( $(date +%s) + $1))"
@@ -63,7 +59,11 @@ countdown() {
         ## Is this more than 24h away?
         days="$(($(($(( $start - $(date +%s) )) * 1 )) / 86400))"
         time="$(( $start - `date +%s` ))"
-        printf '%s day(s) and %s\r' "$days" "$(date -u -d "@$time" +%H:%M:%S)"
+        if [[ "$unameOut" == "Darwin" ]]; then
+            printf '%s day(s) and %s\r' "$days" "$(date -u -r "$time" +%H:%M:%S)"
+        else
+            printf '%s day(s) and %s\r' "$days" "$(date -u -d "@$time" +%H:%M:%S)"
+        fi
         sleep 0.1
     done
 }
@@ -73,12 +73,20 @@ stopwatch() {
     while true; do
         days="$(($(( $(date +%s) - $start )) / 86400))"
         time="$(( $(date +%s) - $start ))"
-        printf '%s day(s) and %s\r' "$days" "$(date -u -d "@$time" +%H:%M:%S)"
+        if [[ "$unameOut" == "Darwin" ]]; then
+            printf '%s day(s) and %s\r' "$days" "$(date -u -r "$time" +%H:%M:%S)"
+        else
+            printf '%s day(s) and %s\r' "$days" "$(date -u -d "@$time" +%H:%M:%S)"
+        fi
         sleep 0.1
     done
 }
 
-alias make='make -j$(nproc)'
+if command_exists nproc; then
+    alias make='make -j$(nproc)'
+elif [[ "$unameOut" == "Darwin" ]]; then
+    alias make='make -j$(sysctl -n hw.ncpu)'
+fi
 
 alias gg='git status'
 alias gr='git grep'
@@ -89,6 +97,17 @@ alias gp='git fetch && git merge --no-edit FETCH_HEAD'
 alias gP='git push'
 alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
 alias lg='lazygit'
+
+# Wrap opencode to set tmux window name
+opencode() {
+    if [ -n "$TMUX" ]; then
+        tmux rename-window 'opencode'
+        command opencode "$@"
+        tmux set-window-option automatic-rename on
+    else
+        command opencode "$@"
+    fi
+}
 
 alias nv='nvim'
 alias py='python3'
@@ -124,28 +143,22 @@ fi
 # linux
 alias name='uname -snrmo'
 alias logins='last -f /var/log/wtmp | less'
-[ -f $HOME/.local/flutter/version ] && export PATH=$PATH:$HOME/.local/flutter/bin && export CHROME_EXECUTABLE=/usr/bin/google-chrome-stable
 
 # mac
 alias brew-update='brew update && brew upgrade --fetch-HEAD'
 
 [ -f '/etc/profile.d/bash_completion.sh' ] && source '/etc/profile.d/bash_completion.sh'
 
-case "${unameOut}" in
-    Linux*)     home='/home/connor';;
-    Darwin*)    home='/Users/connor';;
-esac
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('${home}/.local/share/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$("$HOME/.miniconda3/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "${home}/.local/share/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "${home}/.local/share/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/.miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/.miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="${home}/.local/share/miniconda3/bin:$PATH"
+        export PATH="$HOME/.miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
