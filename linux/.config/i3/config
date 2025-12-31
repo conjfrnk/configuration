@@ -97,7 +97,7 @@ bindsym $mod+Shift+w exec $browser2
 bindsym $mod+m [Class="thunderbird"] scratchpad show; [Class="thunderbird"] move position center
 bindsym $mod+f exec thunar
 bindsym $mod+e exec emacs
-bindsym $mod+backslash [Class="KeePassXC"] scratchpad show; [instance="keepassxc"] move position center
+bindsym $mod+backslash [Class="KeePassXC"] scratchpad show; [Class="KeePassXC"] move position center
 bindsym $mod+z exec --no-startup-id i3lock
 bindsym $mod+p exec --no-startup-id feh --bg-fill --no-fehbg --randomize ~/.local/share/wallpapers
 bindsym $mod+x exec --no-startup-id jetbrains-toolbox
