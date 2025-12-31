@@ -5,9 +5,13 @@ export CLICOLOR=1
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_SESSION_TYPE=wayland 
-export GDK_BACKEND=wayland
-export ELECTRON_OZONE_PLATFORM_HINT=wayland
+
+# Wayland environment variables (Linux only)
+if [ "$(uname -s)" == "Linux" ]; then
+    export XDG_SESSION_TYPE=wayland
+    export GDK_BACKEND=wayland
+    export ELECTRON_OZONE_PLATFORM_HINT=wayland
+fi
 
 export LESSHISTFILE="-"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
@@ -20,19 +24,19 @@ export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 [ -d $HOME/.local/share/cargo/bin ] && export PATH=$PATH:$HOME/.local/share/cargo/bin
 export PATH=$PATH:$GOPATH/bin:$HOME/.local/bin
 
-if [ -n "$BASH_VERSION" -a -n "$PS1" ]; then
+if [ -n "$BASH_VERSION" ]; then
   if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
   fi
 fi
 
-if [ $( uname -s ) == "Linux" ]; then
+if [ "$(uname -s)" == "Linux" ]; then
     if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
         exec dbus-run-session sway
     fi
 fi
 
-type -p gnome-command-daemon > /dev/null && gnome-keyring-daemon -r -d
+type -p gnome-keyring-daemon > /dev/null && gnome-keyring-daemon -r -d
 
 # opam configuration
 test -r ~/.opam/opam-init/init.sh && . ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
