@@ -61,7 +61,7 @@ stopwatch() {
 }
 
 alias nv='nvim'
-alias py='~/.miniconda3/bin/python'
+alias py='python3'
 alias jn='jupyter notebook'
 
 alias clock='tty-clock -s -c -f "%m/%d/%Y"'
