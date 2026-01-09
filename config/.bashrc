@@ -109,6 +109,17 @@ opencode() {
     fi
 }
 
+# Wrap claude to set tmux window name
+claude() {
+    if [ -n "$TMUX" ]; then
+        tmux rename-window 'claude'
+        command claude "$@"
+        tmux set-window-option automatic-rename on
+    else
+        command claude "$@"
+    fi
+}
+
 alias nv='nvim'
 alias py='python3'
 alias jn='jupyter notebook'
