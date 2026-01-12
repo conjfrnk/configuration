@@ -2,6 +2,11 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 export EDITOR='nvim'
 export CLICOLOR=1
 
+# Add Homebrew to PATH on macOS (before system paths so brew vim is preferred)
+if [ "$(uname -s)" == "Darwin" ] && [ -d "/opt/homebrew/bin" ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
