@@ -15,12 +15,16 @@ seat seat0 xcursor_theme Adwaita 24
 
 #flatpak run --socket=wayland com.todoist.Todoist --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations
 
-exec --no-startup-id gammastep -l 40:-75 -t 6500:1200
+#exec --no-startup-id gammastep -l 40:-75 -t 6500:1200
+exec --no-startup-id gammastep -l 40:-75
 
 exec --no-startup-id nm-applet --indicator
+
 output eDP-1 pos 0 0 scale 2
 output DP-3 pos -2560 0
 output DP-4 disable
+output HDMI-A-1 resolution 1820x1020 position 1920 0 scale 1
+
 set $wallpapers_path $HOME/.local/share/wallpapers/png
 output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 exec --no-startup-id thunar --daemon
@@ -75,7 +79,7 @@ for_window [app_id="KeePassXC"] floating enable
 for_window [app_id="KeePassXC"] resize set 2000 1000
 for_window [app_id="KeePassXC"] move scratchpad
 
-exec --no-startup-id todoist-wrapper
+exec --no-startup-id todoist-wrapper --disable-gpu
 for_window [app_id="todoist-wrapper"] floating enable
 for_window [app_id="todoist-wrapper"] move scratchpad
 
@@ -209,6 +213,10 @@ bindsym $mod+r mode "resize"
 
 bar {
         status_command i3status
+}
+
+input type:touchpad {
+    natural_scroll enabled
 }
 
 exec dbus-update-activation-environment --all

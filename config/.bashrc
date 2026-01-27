@@ -185,3 +185,5 @@ fi
 if command_exists opam; then
     eval $(opam env)
 fi
+
+alias claude="/home/connor/.claude/local/claude"

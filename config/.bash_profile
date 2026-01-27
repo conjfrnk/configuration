@@ -37,6 +37,12 @@ fi
 
 if [ "$(uname -s)" == "Linux" ]; then
     if [ -z "${WAYLAND_DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+        #export WLR_DRM_DEVICES=$(realpath /dev/dri/by-path/pci-0000:00:02.0-card)
+        #export WLR_NO_HARDWARE_CURSORS=1
+        #export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json
+        #export __GLX_VENDOR_LIBRARY_NAME=mesa
+        #exec dbus-run-session sway --unsupported-gpu "$@"
+        export WLR_DRM_DEVICES=/dev/dri/card0
         exec dbus-run-session sway
     fi
 fi
