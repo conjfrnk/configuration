@@ -21,3 +21,4 @@ tabbed
 xembed
 
 config/.config/htop
+config/.local/bin/claude
