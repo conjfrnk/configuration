@@ -1,0 +1,9 @@
+#!/bin/bash
+# Switch to tabbed/stacking only if >1 tiling window on the focused workspace
+layout="${1:-tabbed}"
+ws=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused) | .name')
+count=$(swaymsg -t get_tree | jq --arg ws "$ws" '
+  [.. | select(.type == "workspace" and .name == $ws)] | .[0] |
+  [recurse(.nodes[]?) | select(.pid? > 0)] | length
+')
+[ "${count:-0}" -gt 1 ] && swaymsg "layout $layout"

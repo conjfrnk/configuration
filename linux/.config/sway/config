@@ -9,6 +9,15 @@ set $browser2 google-chrome-stable
 font pango: Hack Nerd Font 12
 seat seat0 xcursor_theme Adwaita 24
 
+# Remove window title bars, keep thin border
+default_border pixel 2
+default_floating_border pixel 2
+
+# Small gaps between windows
+gaps inner 5
+gaps outer 2
+
+
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 9
@@ -147,9 +156,9 @@ bindsym $mod+v split v
 
 bindsym $mod+Shift+f fullscreen toggle
 
-bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
-bindsym $mod+g layout toggle split
+bindsym $mod+s exec smart-layout stacking
+bindsym $mod+t exec smart-layout tabbed
+bindsym $mod+g layout toggle split; [tiling] border pixel 2
 
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
