@@ -40,7 +40,7 @@
     "custom/battery": {
         "exec": "~/.local/bin/battery-status",
         "return-type": "json",
-        "interval": 5,
+        "interval": 1,
         "format": "{}"
     },
 
