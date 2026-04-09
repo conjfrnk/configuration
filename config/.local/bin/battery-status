@@ -1,0 +1,48 @@
+#!/bin/sh
+# Battery status with 2-decimal precision (matches i3status behavior).
+# Calculates from energy_now/energy_full instead of using the kernel's
+# pre-rounded capacity file. Outputs waybar JSON.
+
+BAT=/sys/class/power_supply/BAT0
+energy_now=$(cat "$BAT/energy_now")
+energy_full=$(cat "$BAT/energy_full")
+power_now=$(cat "$BAT/power_now")
+status=$(cat "$BAT/status")
+
+pct=$(awk "BEGIN {printf \"%.2f\", $energy_now / $energy_full * 100}")
+pct_int=${pct%.*}
+
+case "$status" in
+    Charging)       label="CHR" ;;
+    Discharging)    label="BAT" ;;
+    Full)           label="FULL" ;;
+    "Not charging") label="FULL" ;;
+    *)              label="$status" ;;
+esac
+
+time_str=""
+if [ "$power_now" -gt 0 ] 2>/dev/null; then
+    case "$status" in
+        Discharging) remaining=$energy_now ;;
+        Charging)    remaining=$((energy_full - energy_now)) ;;
+        *)           remaining=0 ;;
+    esac
+    if [ "$remaining" -gt 0 ]; then
+        time_str=$(awk "BEGIN {h=$remaining/$power_now; printf \"%dh %dm\", int(h), int((h-int(h))*60)}")
+    fi
+fi
+
+class=""
+if [ "$pct_int" -le 10 ]; then
+    class="critical"
+elif [ "$pct_int" -le 30 ]; then
+    class="warning"
+fi
+
+if [ -n "$time_str" ]; then
+    text="$label ${pct}% $time_str"
+else
+    text="$label ${pct}%"
+fi
+
+printf '{"text": "%s", "class": "%s"}\n' "$text" "$class"

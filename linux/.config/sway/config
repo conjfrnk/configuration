@@ -32,8 +32,14 @@ exec --no-startup-id thunar --daemon
 set $lock 'swaylock -f --ignore-empty-password --show-failed-attempts --color 1e1e1e'
 bindswitch --reload --locked lid:on exec $lock
 exec swayidle -w \
+	timeout 300 $lock \
+	timeout 330 'swaymsg "output * power off"' \
+	resume 'swaymsg "output * power on"' \
 	before-sleep 'loginctl lock-session $XDG_SESSION_ID' \
 	lock $lock
+
+# Start PipeWire audio stack (pipewire + pipewire-pulse + wireplumber)
+exec gentoo-pipewire-launcher
 
 # use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -43,9 +49,9 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # increase brightness
-bindsym XF86MonBrightnessUp exec --no-startup-id doas /usr/bin/xbacklight -inc 10 && xbacklight -get | awk -F. '{ print $1 }' > ~/.cache/i3brightness && $refresh_i3status
+bindsym XF86MonBrightnessUp exec --no-startup-id ~/.local/bin/brightness-control up 10
 # decrease brightness
-bindsym XF86MonBrightnessDown exec --no-startup-id doas /usr/bin/xbacklight -dec 10 && xbacklight -get | awk -F. '{ print $1 }' > ~/.cache/i3brightness && $refresh_i3status
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.local/bin/brightness-control down 10
 
 # use mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -212,7 +218,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 bar {
-        status_command i3status
+        swaybar_command waybar
 }
 
 input type:touchpad {
@@ -220,5 +226,4 @@ input type:touchpad {
 }
 
 exec dbus-update-activation-environment --all
-exec gnome-keyring-daemon --start --components=secrets
-exec export $(gnome-keyring-daemon)
+exec gnome-keyring-daemon --start --components=secrets,ssh,pkcs11

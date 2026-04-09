@@ -1,0 +1,81 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 30,
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-right": [
+        "custom/weather",
+        "network",
+        "custom/battery",
+        "pulseaudio",
+        "custom/brightness",
+        "memory",
+        "custom/load",
+        "clock",
+        "tray"
+    ],
+
+    "sway/workspaces": {
+        "disable-scroll": true
+    },
+
+    "sway/mode": {
+        "format": "{}"
+    },
+
+    "network": {
+        "interface": "wlp0s20f3",
+        "interval": 5,
+        "format-wifi": "{essid} {signalStrength}%",
+        "format-disconnected": "W: down",
+        "format-linked": "{ifname} (no IP)"
+    },
+
+    "custom/weather": {
+        "exec": "cat ~/.cache/weather 2>/dev/null",
+        "interval": 600,
+        "format": "{}"
+    },
+
+    "custom/battery": {
+        "exec": "~/.local/bin/battery-status",
+        "return-type": "json",
+        "interval": 5,
+        "format": "{}"
+    },
+
+    "pulseaudio": {
+        "format": "VOL {volume}%",
+        "format-muted": "MUTE {volume}%"
+    },
+
+    "custom/brightness": {
+        "exec": "cat ~/.cache/i3brightness 2>/dev/null",
+        "interval": 5,
+        "signal": 1,
+        "format": "BRI {}%"
+    },
+
+    "memory": {
+        "interval": 10,
+        "format": "MEM {used:.1f} GiB",
+        "states": {
+            "warning": 75
+        }
+    },
+
+    "custom/load": {
+        "exec": "cut -d' ' -f1 /proc/loadavg",
+        "interval": 10,
+        "format": "LOAD {}"
+    },
+
+    "clock": {
+        "interval": 1,
+        "format": "{:%a %m/%d/%Y %H:%M:%S}"
+    },
+
+    "tray": {
+        "spacing": 10
+    }
+}

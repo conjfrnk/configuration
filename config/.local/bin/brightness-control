@@ -1,0 +1,32 @@
+#!/bin/sh
+# Brightness control with true-zero support.
+# When brightness hits 0, powers off the display via DPMS (sway output power).
+# Brightness up from 0 powers the display back on first.
+# Usage: brightness-control up|down [step]
+
+STEP="${2:-10}"
+
+current=$(xbacklight -get | cut -d. -f1)
+current="${current:-0}"
+
+case "$1" in
+    up)
+        swaymsg "output eDP-1 power on" 2>/dev/null
+        target=$(( (current / STEP + 1) * STEP ))
+        [ "$target" -gt 100 ] && target=100
+        xbacklight -set "$target"
+        ;;
+    down)
+        if [ "$current" -le "$STEP" ]; then
+            xbacklight -set 0
+            swaymsg "output eDP-1 power off" 2>/dev/null
+        else
+            target=$(( ((current - 1) / STEP) * STEP ))
+            xbacklight -set "$target"
+        fi
+        ;;
+esac
+
+# Update bar cache and signal waybar to refresh immediately
+xbacklight -get | cut -d. -f1 > "$HOME/.cache/i3brightness"
+pkill -SIGRTMIN+1 waybar 2>/dev/null

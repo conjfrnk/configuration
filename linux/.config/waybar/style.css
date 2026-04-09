@@ -1,0 +1,81 @@
+* {
+    font-family: "Hack Nerd Font";
+    font-size: 12pt;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Workspace buttons - swaybar defaults */
+#workspaces button {
+    padding: 0 5px;
+    color: #888888;
+    background-color: #222222;
+    border: none;
+    border-radius: 0;
+}
+
+#workspaces button.focused {
+    background-color: #285577;
+    color: #ffffff;
+}
+
+#workspaces button.urgent {
+    background-color: #900000;
+    color: #ffffff;
+}
+
+/* Separator between modules */
+#custom-weather,
+#network,
+#custom-battery,
+#pulseaudio,
+#custom-brightness,
+#memory,
+#custom-load,
+#clock,
+#tray {
+    padding: 0 8px;
+    border-left: 1px solid #666666;
+}
+
+/* Stateful modules - i3status color_good */
+#network,
+#custom-battery,
+#pulseaudio,
+#memory,
+#custom-load {
+    color: #00FF00;
+}
+
+/* Static modules - white */
+#custom-weather,
+#custom-brightness,
+#clock {
+    color: #ffffff;
+}
+
+/* Degraded - i3status color_degraded */
+#custom-battery.warning {
+    color: #FFFF00;
+}
+
+#memory.warning {
+    color: #FFFF00;
+}
+
+#pulseaudio.muted {
+    color: #FFFF00;
+}
+
+/* Bad - i3status color_bad */
+#custom-battery.critical {
+    color: #FF0000;
+}
+
+#network.disconnected {
+    color: #FF0000;
+}
