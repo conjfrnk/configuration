@@ -6,6 +6,7 @@ Session.vim
 
 *.o
 *.zwc
+*.bak
 .DS_Store
 *.log
 *.core
