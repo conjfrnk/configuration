@@ -13,9 +13,11 @@ seat seat0 xcursor_theme Adwaita 24
 default_border pixel 2
 default_floating_border pixel 2
 
-# Small gaps between windows
+# Small gaps between windows (disabled when only one container, e.g. single
+# window or tabbed/stacked layout)
 gaps inner 5
 gaps outer 2
+smart_gaps on
 
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
