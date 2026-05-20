@@ -24,8 +24,6 @@ smart_gaps on
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 9
 
-#flatpak run --socket=wayland com.todoist.Todoist --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations
-
 #exec --no-startup-id gammastep -l 40:-75 -t 6500:1200
 exec --no-startup-id gammastep -l 40:-75
 
@@ -96,9 +94,9 @@ for_window [app_id="KeePassXC"] floating enable
 for_window [app_id="KeePassXC"] resize set 2000 1000
 for_window [app_id="KeePassXC"] move scratchpad
 
-exec --no-startup-id todoist-wrapper --disable-gpu
-for_window [app_id="todoist-wrapper"] floating enable
-for_window [app_id="todoist-wrapper"] move scratchpad
+exec --no-startup-id flatpak run --socket=wayland com.todoist.Todoist --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations
+for_window [app_id="todoist"] floating enable
+for_window [app_id="todoist"] move scratchpad
 
 #exec --no-startup-id flatpak run app.bluebubbles.BlueBubbles
 for_window [title="BlueBubbles"] floating enable
@@ -125,7 +123,7 @@ bindsym $mod+p output * bg $(find $wallpapers_path -type f | shuf -n 1) fill
 bindsym $mod+x exec --no-startup-id jetbrains-toolbox
 bindsym $mod+o exec --no-startup-id libreoffice
 bindsym $mod+Shift+o exec --no-startup-id flatpak run --socket=wayland md.obsidian.Obsidian --ozone-platform=wayland --enable-features=WaylandWindowDecorations
-bindsym $mod+Shift+d [app_id="todoist-wrapper"] scratchpad show; [app_id="todoist-wrapper"] move position center
+bindsym $mod+Shift+d [app_id="todoist"] scratchpad show; [app_id="todoist"] move position center
 bindsym $mod+Shift+i [title="BlueBubbles"] scratchpad show; [title="BlueBubbles"] move position center
 
 # change focus
