@@ -21,6 +21,9 @@ setopt PROMPT_SUBST
 #PROMPT='%n in ${PWD/#$HOME/~} ${vcs_info_msg_0_}%% '
 PROMPT='%(?..[%?] )%{$fg[red]%}[%{$fg[green]%}%n%{$fg[red]%}@%{$fg[blue]%}%m%{$fg[red]%}] %{$fg[yellow]%}%~ %{$fg[cyan]%}${vcs_info_msg_0_}%{$reset_color%}%% '
 
+# tmux 'extended-keys always' delivers Shift+Enter as CSI u; accept it as Enter at the prompt
+bindkey '^[[13;2u' accept-line
+
 # creates a tmux session named as the current directory and containing two windows
 function tmx {
   name="$(basename "$PWD")"

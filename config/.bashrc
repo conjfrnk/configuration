@@ -4,6 +4,11 @@ command_exists () {
     type "$1" &> /dev/null ;
 }
 
+# ssh from a terminal whose terminfo isn't installed here: fall back instead of breaking curses apps
+if command_exists infocmp && ! infocmp "$TERM" >/dev/null 2>&1; then
+    export TERM=xterm-256color
+fi
+
 if command_exists nvim; then
     export VISUAL='nvim'
 else
@@ -82,10 +87,11 @@ stopwatch() {
     done
 }
 
-if command_exists nproc; then
-    alias make='make -j$(nproc)'
-elif [[ "$unameOut" == "Darwin" ]]; then
+# no parallel-make alias on OpenBSD: plain make plays nicer with ports
+if [[ "$unameOut" == "Darwin" ]]; then
     alias make='make -j$(sysctl -n hw.ncpu)'
+elif [[ "$unameOut" == "Linux" ]] && command_exists nproc; then
+    alias make='make -j$(nproc)'
 fi
 
 alias gg='git status'
@@ -97,6 +103,11 @@ alias gp='git fetch && git merge --no-edit FETCH_HEAD'
 alias gP='git push'
 alias gu='git fetch && git merge --no-edit FETCH_HEAD && git push'
 alias lg='lazygit'
+
+# tmux 'extended-keys always' delivers Shift+Enter as CSI u; accept it as Enter at the prompt
+if [[ $- == *i* ]]; then
+    bind '"\e[13;2u": accept-line'
+fi
 
 # Wrap opencode to set tmux window name
 opencode() {
