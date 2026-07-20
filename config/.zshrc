@@ -88,6 +88,7 @@ alias t='tree -C'
 
 alias c='clear'
 alias s='source ~/.zshrc > /dev/null 2>&1'
+alias x='codex'
 
 if command_exists fastfetch; then
   alias f='fastfetch'
@@ -161,3 +162,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Codex Ultracode launch identity (kept in the source checkout).
+[[ -r /Users/connor/codex-ultracode/plugins/agent-performance/scripts/codex-ultracode.zsh ]] && \
+  source /Users/connor/codex-ultracode/plugins/agent-performance/scripts/codex-ultracode.zsh
